@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\SeatController;
 use App\Models\Reservation;
 use App\Models\Seat;
 use Faker\Core\DateTime;
@@ -17,29 +19,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('seats', [SeatController::class, 'index']);
+
+
+/* Route::get('reservations', [ReservationController::class, 'index']);
+Route::post('reservations/create', [ReservationController::class, 'store']); */
+Route::resource('reservations', ReservationController::class);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-
-
-Route::get('seats', function ()
-{
-    return Seat::all();
-});
-
-Route::post('reservations/create',function (){
-    $faker = Faker\Factory::create();
-    return Reservation::create(
-        [
-            'name' => 'Davca Sedlar',
-            'email' => 'davca@mail.com',
-            'tel'=> '555222555',
-            'note' => 'realne nechce na ples',
-            'stand' => '5',
-            'price_all'=> '525',
-            'status' => 1,
-            'date_reservation' => $faker->dateTime(),
-            'date_payment' => $faker->dateTime()
-        ]
-    );
 });
