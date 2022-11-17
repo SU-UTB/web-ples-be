@@ -7,12 +7,55 @@ use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
+/**
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="Kodementor Api Documentation",
+ *     description="Kodementor Api Documentation",
+ *     @OA\Contact(
+ *         name="Vijay Rana",
+ *         email="info@kodementor.com"
+ *     ),
+ *     @OA\License(
+ *         name="Apache 2.0",
+ *         url="http://www.apache.org/licenses/LICENSE-2.0.html"
+ *     )
+ * ),
+ * @OA\Server(
+ *     url="/api/v1",
+ * ),
+ */
 class ReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     */
+     /**
+     * @OA\Get(
+     *    path="/articles",
+     *    operationId="index",
+     *    tags={"Articles"},
+     *    summary="Get list of articles",
+     *    description="Get list of articles",
+     *    @OA\Parameter(name="limit", in="query", description="limit", required=false,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="page", in="query", description="the page number", required=false,
+     *        @OA\Schema(type="integer")
+     *    ),
+     *    @OA\Parameter(name="order", in="query", description="order  accepts 'asc' or 'desc'", required=false,
+     *        @OA\Schema(type="string")
+     *    ),
+     *     @OA\Response(
+     *          response=200, description="Success",
+     *          @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example="200"),
+     *             @OA\Property(property="data",type="object")
+     *          )
+     *       )
+     *  )
      */
     public function index()
     {
@@ -25,6 +68,8 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    
     public function store(Request $request)
     {
 

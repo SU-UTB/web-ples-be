@@ -29,3 +29,11 @@ Route::resource('reservations', ReservationController::class);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+Route::get('doc', function () {
+    $path = storage_path() . "/api-docs/api-docs.json"; // ie: /var/www/laravel/app/storage/json/filename.json
+
+    $json = json_decode(file_get_contents($path), true); 
+    return $json;
+});
