@@ -20,4 +20,9 @@ class Reservation extends Model
         'date_reservation',
         'date_payment'
     ];
+
+
+    protected $attributes = [
+        'status' => 1
+    ];
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use DateTime;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReservationController extends Controller
 {
@@ -26,22 +28,22 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
-            'name' => 'required'
-        ]);
+        //   $request->validate([
+        //      'name' => 'required'
+        // ]);
+        $stand = $request->input('stand');
+        $price = 500;
         return Reservation::create(
-            $request->all()
-            /*           [
-                'name' => 'Davca Sedlar',
-                'email' => 'davca@mail.com',
-                'tel'=> '555222555',
-                'note' => 'realne nechce na ples',
-                'stand' => '5',
-                'price_all'=> '525',
+            [
+                'name' =>  $request->input('name'),
+                'email' => $request->input('email'),
+                'tel' => $request->input('tel'),
+                'note' => $request->input('note'),
+                'stand' => $stand,
+                'price_all' => $stand * $price,
                 'status' => 1,
-                'date_reservation' => $faker->dateTime(),
-                'date_payment' => $faker->dateTime()
-            ] */
+                'date_payment' => null
+            ]
         );
     }
 
