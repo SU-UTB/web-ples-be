@@ -25,6 +25,7 @@ Route::get('seats', [SeatController::class, 'index']);
 /* Route::get('reservations', [ReservationController::class, 'index']);
 Route::post('reservations/create', [ReservationController::class, 'store']); */
 Route::resource('reservations', ReservationController::class);
+Route::get('reservations/search/{name}', [ReservationController::class, 'search']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();

@@ -32,7 +32,7 @@ class ReservationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-     /**
+    /**
      * @OA\Get(
      *    path="/articles",
      *    operationId="index",
@@ -69,7 +69,7 @@ class ReservationController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    
+
     public function store(Request $request)
     {
 
@@ -126,5 +126,17 @@ class ReservationController extends Controller
     public function destroy($id)
     {
         return Reservation::destroy($id);
+    }
+
+
+    /**
+     * Search with a name.
+     *
+     * @param  str  $name
+     * @return \Illuminate\Http\Response
+     */
+    public function search($name)
+    {
+        return Reservation::where('name', 'like', '%'.$name.'%')->get();
     }
 }
