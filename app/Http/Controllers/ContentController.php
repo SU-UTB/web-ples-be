@@ -21,11 +21,11 @@ class ContentController extends Controller
         $tickets = TicketContent::find(1);
 
         $ticketsContact = $contacts->find($tickets->contact_user_id);
-        
+
         $ticketsContent = new LandingPageTicketContent($tickets->reservation_from, $ticketsContact);
-        $landingContent =  new LandingPageContent($contents, $contacts->where('role', '!=','tickets'), $ticketsContent);
+        $landingContent =  new LandingPageContent($contents, $contacts->where('role', '!=', 'tickets'), $ticketsContent);
 
 
-        return json_encode($landingContent);
+        return json_encode($landingContent, JSON_UNESCAPED_UNICODE);
     }
 }
