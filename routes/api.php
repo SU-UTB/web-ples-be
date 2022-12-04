@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SeatController;
 use App\Models\Reservation;
@@ -23,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 // Public routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('pages/landing', [ContentController::class, 'index']);
 
 Route::get('seats', [SeatController::class, 'index']);
 Route::get('doc', function () {
