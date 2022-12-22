@@ -34,12 +34,14 @@ Route::get('doc', function () {
     return $json;
 });
 
+//TODO Remove later
+Route::resource('reservations', ReservationController::class);
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout' , [AuthController::class, 'logout']);
 
-    Route::resource('reservations', ReservationController::class);
+    //Route::resource('reservations', ReservationController::class);
     Route::get('reservations/search/{name}', [ReservationController::class, 'search']);
 });
 

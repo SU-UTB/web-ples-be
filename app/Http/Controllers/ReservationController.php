@@ -76,20 +76,21 @@ class ReservationController extends Controller
         //   $request->validate([
         //      'name' => 'required'
         // ]);
-        $stand = $request->input('stand');
-        $price = 500;
-        return Reservation::create(
-            [
-                'name' =>  $request->input('name'),
-                'email' => $request->input('email'),
-                'tel' => $request->input('tel'),
-                'note' => $request->input('note'),
-                'stand' => $stand,
-                'price_all' => $stand * $price,
-                'status' => 1,
-                'date_payment' => null
-            ]
-        );
+        dd($request->all());
+        // $stand = $request->input('stand');
+        // $price = 500;
+        // return Reservation::create(
+        //     [
+        //         'name' =>  $request->input('name'),
+        //         'email' => $request->input('email'),
+        //         'tel' => $request->input('tel'),
+        //         'note' => $request->input('note'),
+        //         'stand' => $stand,
+        //         'price_all' => $stand * $price,
+        //         'status' => 1,
+        //         'date_payment' => null
+        //     ]
+        // );
     }
 
     /**
