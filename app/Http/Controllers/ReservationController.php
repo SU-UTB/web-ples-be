@@ -7,6 +7,7 @@ use App\Models\Seat;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * @OA\Info(
@@ -96,7 +97,20 @@ class ReservationController extends Controller
         $seats = Seat::findMany($request->input('seats'))->toArray();
         $this->updateSeats($seats, $reservation->id);
 
-        return view("reserved", ['reservation' => $reservation, 'seats'=>$seats]);
+        $data = ['reservation' => $reservation, 'seats' => $seats];
+
+       // $this->sendEmail();
+
+        return view("reserved", $data);
+    }
+
+    public function sendEmail()
+    {
+        $data = array('name'=>"Virat Gandhi");
+        Mail::send(['text' => 'mail'], $data, function ($message) {
+            $message->to('sedlar@sutb.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
+            $message->from('sedlar@sutb.com', 'DS');
+        });
     }
 
     private function updateSeats($seats, $reservationId)
