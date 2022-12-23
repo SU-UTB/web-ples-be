@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Reservation;
+use App\Models\Seat;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -76,7 +77,7 @@ class ReservationController extends Controller
         //   $request->validate([
         //      'name' => 'required'
         // ]);
-        $stand = $request->input('stand');
+        $stand = $request->input('stand') ?? 0;
         $price = 500;
         $reservation = Reservation::create(
             [
@@ -87,10 +88,24 @@ class ReservationController extends Controller
                 'stand' => $stand,
                 'price_all' => $stand * $price,
                 'status' => 1,
-                'date_payment' => null
+                'date_reservation' => Carbon::now(),
+                'date_payment' => Carbon::now()
             ]
         );
-        return view("reserved", $reservation);
+
+        $seats = Seat::findMany($request->input('seats'))->toArray();
+        $this->updateSeats($seats, $reservation->id);
+
+        return view("reserved", ['reservation' => $reservation, 'seats'=>$seats]);
+    }
+
+    private function updateSeats($seats, $reservationId)
+    {
+        foreach ($seats as $seatObj) {
+            $seat = Seat::find($seatObj['id']);
+            $seat->rezervace = $reservationId;
+            $seat->save();
+        }
     }
 
     /**
@@ -139,5 +154,11 @@ class ReservationController extends Controller
     public function search($name)
     {
         return Reservation::where('name', 'like', '%' . $name . '%')->get();
+    }
+
+    public function reservationTest()
+    {
+        $seats = Seat::all()->toArray();
+        return view('reservation', ["seats" => $seats]);
     }
 }

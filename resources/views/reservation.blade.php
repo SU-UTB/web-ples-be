@@ -54,6 +54,14 @@
                         <label for="stand" class="form-label">Na stání</label>
                         <input type="number" class="form-control" id="stand" name="stand" placeholder="">
                     </div>
+                    <div class="form-group mt-2">
+                        <label for="seat">Sedadla</label>
+                        <select class="form-control" name="seats" id="seats" multiple>
+                            @foreach ($seats as $seat)
+                                <option value="{{ $seat['id'] }}">{{ $seat['alias'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <br>
                     <br>

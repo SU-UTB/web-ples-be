@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,7 +18,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('test/rezervace', function ()
-{
-    return view('reservation');
-});
+Route::get('test/rezervace', [ReservationController::class, 'reservationTest']);

@@ -28,7 +28,42 @@
                 Potvrzení rezervace
             </div>
             <div class="card-body">
-                <h1> {{ $reservation }}</h1>
+                <div class="d-flex align-items-center">
+                    <h3>Jméno</h3>
+                    <div class="w-10 p-3"></div>
+                    <h6> {{ $reservation->name }}</h6>
+                </div>
+                <div class="d-flex align-items-center">
+                    <h3>Email</h3>
+                    <div class="w-10 p-3"></div>
+                    <h6> {{ $reservation->email }}</h6>
+                </div>
+                <div class="d-flex align-items-center">
+                    <h3>Telefon</h3>
+                    <div class="w-10 p-3"></div>
+                    <h6> {{ $reservation->tel }}</h6>
+                </div>
+                <div class="d-flex align-items-center">
+                    <h3>Poznámka</h3>
+                    <div class="w-10 p-3"></div>
+                    <h6> {{ $reservation->note }}</h6>
+                </div>
+                <br>
+                <br>
+                <div class="d-flex align-items-center">
+                    <h3>Počet na stání</h3>
+                    <div class="w-10 p-3"></div>
+                    <h6> {{ $reservation->stand }}</h6>
+                </div>
+                <br>
+                <br>
+                <div class="d-flex align-items-center">
+                    <h3>Sedadla</h3>
+                    <div class="w-10 p-3"></div>
+                    @foreach ($seats as $seat)
+                        <h6> {{ $seat['alias'] }}, </h6>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
