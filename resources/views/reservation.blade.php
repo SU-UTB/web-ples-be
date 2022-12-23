@@ -20,55 +20,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
-    
+
     <div class="container mt-4">
-    
+
         <div class="card">
-          <div class="card-header text-center font-weight-bold">
-            Rezervace
-          </div>
-          <div class="card-body">
-            <form name="add-blog-post-form" id="add-blog-post-form" method="post" action="{{url('api/reservations/')}}">
-             @csrf
-              <div class="form-group">
-               
+            <div class="card-header text-center font-weight-bold">
+                Rezervace
+            </div>
+            <div class="card-body">
+                <form name="add-blog-post-form" id="add-blog-post-form" method="post"
+                    action="{{ url('api/reservations/') }}">
+                    @csrf
+                    <div class="form-group mt-2">
+                        <label for="name" class="form-label">Jméno</label>
+                        <input type="name" class="form-control" id="name" name="name"
+                            placeholder="Karel Svobodný">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            placeholder="kaja@bourak.com">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="tel" class="form-label">Telefon</label>
+                        <input type="tel" class="form-control" id="tel" name="tel"
+                            placeholder="555 252 222">
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="note" class="form-label">Poznámka</label>
+                        <textarea class="form-control" id="note" name="note" placeholder=""></textarea>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label for="stand" class="form-label">Na stání</label>
+                        <input type="number" class="form-control" id="stand" name="stand" placeholder="">
+                    </div>
 
-            <label for="name" class="form-label">Jméno</label>
-            <input type="text" class="form-control" id="name" placeholder="Karel Svobodný">
-              </div>
-              <div class="form-group">
-                <label for="exampleInputEmail1">Description</label>
-                <textarea name="description" class="form-control" required=""></textarea>
-              </div>
-              <button type="submit" class="btn btn-dark">Rezervovat</button>
-            </form>
-          </div>
+                    <br>
+                    <br>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-dark">Rezervovat</button>
+                    </div>
+                </form>
+            </div>
         </div>
-      </div> 
-    <form name="reservation-form" method="post" action="{{url('api/reservations/')}}">
-        @csrf <!-- {{ csrf_field() }} -->
-
-        <div class="mb-3">
-            <label for="name" class="form-label">Jméno</label>
-            <input type="name" class="form-control" id="name" placeholder="Karel Svobodný">
-        </div>
-        <div class="mb-3">
-            <label for="mail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="mail" placeholder="kaja@bourak.com">
-        </div>
-        <div class="mb-3">
-            <label for="phone" class="form-label">Telefon</label>
-            <input type="tel" class="form-control" id="phone" placeholder="555 252 222">
-        </div>
-        <div class="mb-3">
-            <label for="note" class="form-label">Poznámka</label>
-            <textarea type="note" class="form-control" id="note" placeholder=""></textarea>
-        </div>
-        <div class="mb-3">
-        <button type="submit" class="btn btn-dark">Rezervovat</button>
     </div>
-
-    </form>
 
 </body>
 
