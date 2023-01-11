@@ -12,6 +12,17 @@ class SeatController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    /**
+     * @OA\Get(
+     *    path="/api/seats",
+     *    tags={"Seats"},
+     *    summary="Get list of seats",
+     *    description="Get list of seats",
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     *  )
+     */
     public function index()
     {
       return Seat::all();

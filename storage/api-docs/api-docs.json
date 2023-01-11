@@ -19,7 +19,7 @@
         }
     ],
     "paths": {
-        "/reservations": {
+        "/api/reservations": {
             "get": {
                 "tags": [
                     "Reservations"
@@ -44,7 +44,7 @@
                     "Reservations"
                 ],
                 "summary": "Creates a reservation",
-                "operationId": "1aabc7d432cc652e63cfc3fb514132cd",
+                "operationId": "01e3d21dc330a31de025203bc142ffa3",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -94,6 +94,27 @@
                         }
                     }
                 },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/seats": {
+            "get": {
+                "tags": [
+                    "Seats"
+                ],
+                "summary": "Get list of seats",
+                "description": "Get list of seats",
+                "operationId": "09a0c40bbde096321060e7db24676668",
                 "responses": {
                     "200": {
                         "description": "OK"

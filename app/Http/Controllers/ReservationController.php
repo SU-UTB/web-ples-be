@@ -36,7 +36,7 @@ class ReservationController extends Controller
      */
     /**
      * @OA\Get(
-     *    path="/reservations",
+     *    path="/api/reservations",
      *    operationId="index",
      *    tags={"Reservations"},
      *    summary="Get list of reservations",
@@ -60,7 +60,7 @@ class ReservationController extends Controller
     /**
      * @OA\Post(
      *   tags={"Reservations"},
-     *   path="/reservations",
+     *   path="/api/reservations",
      *   summary="Creates a reservation",
      *     @OA\RequestBody(
      *         @OA\MediaType(
