@@ -89,7 +89,7 @@ class ReservationController extends Controller
                 'stand' => $stand,
                 'price_all' => $stand * $price,
                 'status' => 1,
-                'date_reservation' => Carbon::now(),
+                //'date_reservation' => Carbon::now(),
                 'date_payment' => Carbon::now()
             ]
         );
