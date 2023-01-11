@@ -12,11 +12,11 @@ use Illuminate\Support\Facades\Mail;
 /**
  * @OA\Info(
  *     version="1.0.0",
- *     title="Kodementor Api Documentation",
- *     description="Kodementor Api Documentation",
+ *     title="SU Ples - Api Documentation",
+ *     description="Api Documentation for UTB Representative Ball",
  *     @OA\Contact(
- *         name="Vijay Rana",
- *         email="info@kodementor.com"
+ *         name="Sedlar David",
+ *         email="sedlar@sutb.cz"
  *     ),
  *     @OA\License(
  *         name="Apache 2.0",
@@ -36,27 +36,14 @@ class ReservationController extends Controller
      */
     /**
      * @OA\Get(
-     *    path="/articles",
+     *    path="/reservations",
      *    operationId="index",
-     *    tags={"Articles"},
-     *    summary="Get list of articles",
-     *    description="Get list of articles",
-     *    @OA\Parameter(name="limit", in="query", description="limit", required=false,
-     *        @OA\Schema(type="integer")
-     *    ),
-     *    @OA\Parameter(name="page", in="query", description="the page number", required=false,
-     *        @OA\Schema(type="integer")
-     *    ),
-     *    @OA\Parameter(name="order", in="query", description="order  accepts 'asc' or 'desc'", required=false,
-     *        @OA\Schema(type="string")
-     *    ),
-     *     @OA\Response(
-     *          response=200, description="Success",
-     *          @OA\JsonContent(
-     *             @OA\Property(property="status", type="integer", example="200"),
-     *             @OA\Property(property="data",type="object")
-     *          )
-     *       )
+     *    tags={"Reservations"},
+     *    summary="Get list of reservations",
+     *    description="Get list of reservations",
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
      *  )
      */
     public function index()
@@ -70,7 +57,56 @@ class ReservationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-
+    /**
+     * @OA\Post(
+     *   tags={"Reservations"},
+     *   path="/reservations",
+     *   summary="Creates a reservation",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="name",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),     
+     *                @OA\Property(
+     *                     property="tel",
+     *                     type="integer"
+     *                 ),                 
+     *                   @OA\Property(
+     *                     property="note",
+     *                     type="string"
+     *                 ),    
+     *                               @OA\Property(
+     *                     property="stand",
+     *                     type="integer"
+     *                 ),         
+     *                     @OA\Property(
+     *                     property="seats",
+     *                     type="integer"
+     *                 ),
+     * @OA\Property(
+     *      type="array",
+     *      @OA\Items(
+     *          type="array",
+     *          @OA\Items()
+     *      ),
+     *      description="List of Seat ids"
+     * ),
+     *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
+     *             )
+     *         )
+     *     ),
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     */
 
     public function store(Request $request)
     {
@@ -99,14 +135,14 @@ class ReservationController extends Controller
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
 
-       // $this->sendEmail();
+        // $this->sendEmail();
 
         return view("reserved", $data);
     }
 
     public function sendEmail()
     {
-        $data = array('name'=>"Virat Gandhi");
+        $data = array('name' => "Virat Gandhi");
         Mail::send(['text' => 'mail'], $data, function ($message) {
             $message->to('sedlar@sutb.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
             $message->from('sedlar@sutb.com', 'DS');
