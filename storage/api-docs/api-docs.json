@@ -19,6 +19,34 @@
         }
     ],
     "paths": {
+        "/api/pages/landing": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Get content of landing page",
+                "description": "Get content of landing page",
+                "operationId": "9c8f8932487a49920c33f3d3eb4dd88f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LandingPageContent"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/reservations": {
             "get": {
                 "tags": [
@@ -126,6 +154,13 @@
                         "description": "Not Found"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "LandingPageContent": {
+                "type": "object"
             }
         }
     }

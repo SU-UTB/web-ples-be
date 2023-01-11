@@ -13,7 +13,24 @@ use Illuminate\Support\Facades\Log;
 
 class ContentController extends Controller
 {
-
+    /**
+     * @OA\Get(
+     *    path="/api/pages/landing",
+     *    tags={"Pages"},
+     *    summary="Get content of landing page",
+     *    description="Get content of landing page",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+         *      @OA\MediaType(
+         *          mediaType="application/json",
+         *          @OA\Schema(ref="#/components/schemas/LandingPageContent")
+         *          )
+     *       ),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     *  )
+     */
     public function index()
     {
         $contents = Content::all();
