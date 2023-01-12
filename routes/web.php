@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\ReservationController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,12 @@ Route::get('/', function () {
 });
 
 Route::get('test/rezervace', [ReservationController::class, 'reservationTest']);
+
+
+
+Route::get('admin' , [AdministrationController::class, 'dashboard']);
+Route::get('admin/reservations' , [AdministrationController::class, 'reservations']);
+
+Route::group(['middleware' => ['auth:sanctum']], function () {
+   // Route::get('admin' , [AdministrationController::class, 'dashboard']);
+});
