@@ -65,6 +65,8 @@
                     @endforeach
                 </div>
             </div>
+            <button type="submit" class="btn btn-orange">
+                <a href="{{ route('dashboard') }}">Administrace</a></button>
         </div>
     </div>
 

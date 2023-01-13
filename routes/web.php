@@ -22,7 +22,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('test/reservation' , [ReservationController::class, 'reservationTest']);
 
 Route::middleware('auth')->group(function () {
 
@@ -31,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/content/landing', [ContentLandingEditController::class, 'index'])->name('landingEdit');
     Route::put('/admin/content/landing/{id}', [ContentLandingEditController::class, 'updateContent'])->name('updateLandingContent');
 
+    Route::get('test/reservation' , [ReservationController::class, 'reservationTest'])->name('reservationTest');
     Route::post('/admin/reservations', [ReservationController::class, 'store']);
     Route::get('/admin/reservations/{id}', [ReservationController::class, 'cancel'])->name('cancelReservation');
 
