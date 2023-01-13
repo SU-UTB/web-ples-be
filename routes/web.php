@@ -21,15 +21,11 @@ Route::get('/', function () {
 });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     
-    Route::get('/admin', [AdministrationController::class, 'dashboard']);
-    Route::get('/admin/reservations', [AdministrationController::class, 'reservations']);
-    Route::get('/admin/content/landing', [ContentLandingEditController::class, 'index']);
+    Route::get('/admin', [AdministrationController::class, 'dashboard'])->name('dashboard');
+    Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
+    Route::get('/admin/content/landing', [ContentLandingEditController::class, 'index'])->name('landingEdit');
     Route::put('/admin/content/landing/{id}', [ContentLandingEditController::class, 'updateContent'])->name('updateLandingContent');
 
 
