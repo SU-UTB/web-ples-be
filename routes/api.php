@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\ContentLandingController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SeatController;
 use App\Models\Reservation;
@@ -22,32 +23,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 // Public routes
-Route::post('register', [AuthController::class, 'register']);
+//Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::get('pages/landing', [ContentController::class, 'index']);
+Route::get('pages/landing', [ContentLandingController::class, 'index']);
 
-Route::get('seats', [SeatController::class, 'index']);
-Route::get('doc', function () {
-    $path = storage_path() . "/api-docs/api-docs.json"; // ie: /var/www/laravel/app/storage/json/filename.json
-
-    $json = json_decode(file_get_contents($path), true);
-    return $json;
-});
-
-//TODO Remove later
-Route::resource('reservations', ReservationController::class);
 
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('logout' , [AuthController::class, 'logout']);
+    Route::post('logout', [AuthController::class, 'logout']);
 
+    Route::get('seats', [SeatController::class, 'index']);
     //Route::resource('reservations', ReservationController::class);
     Route::get('reservations/search/{name}', [ReservationController::class, 'search']);
+
 });
 
 
 /*Route::middleware('auth:sanctum')->get('/user', function () {
     return $request->user();
 });*/
-
-

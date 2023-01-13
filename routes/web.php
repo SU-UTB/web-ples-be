@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministrationController;
+use App\Http\Controllers\Content\ContentLandingEditController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +29,10 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/admin', [AdministrationController::class, 'dashboard']);
     Route::get('/admin/reservations', [AdministrationController::class, 'reservations']);
+    Route::get('/admin/content/landing', [ContentLandingEditController::class, 'index']);
+    Route::put('/admin/content/landing/{id}', [ContentLandingEditController::class, 'updateContent'])->name('updateLandingContent');
+
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

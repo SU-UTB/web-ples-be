@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Content;
 
+use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\Content;
 use App\Models\LandingPageContent;
-use App\Models\TicketContent;
 use App\Models\LandingPageTicketContent;
+use App\Models\TicketContent;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Log;
+use Tmp;
 
-class ContentController extends Controller
+class ContentLandingController extends Controller
 {
     /**
      * @OA\Get(
@@ -22,16 +22,24 @@ class ContentController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-         *      @OA\MediaType(
-         *          mediaType="application/json",
-         *          @OA\Schema(ref="#/components/schemas/LandingPageContent")
-         *          )
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(ref="#/components/schemas/LandingPageContent")
+     *          )
      *       ),
      *   @OA\Response(response=401, description="Unauthorized"),
      *   @OA\Response(response=404, description="Not Found")
      *  )
      */
     public function index()
+    {
+
+
+        $landingContent = $this->getLandingContent();
+        return json_encode($landingContent, JSON_UNESCAPED_UNICODE);
+    }
+
+    public static function getLandingContent()
     {
         $contents = Content::all();
         $contacts = Contact::all();
@@ -42,7 +50,6 @@ class ContentController extends Controller
         $ticketsContent = new LandingPageTicketContent($tickets->reservation_from, $ticketsContact);
         $landingContent =  new LandingPageContent($contents, $contacts->where('role', '!=', 'tickets'), $ticketsContent);
 
-
-        return json_encode($landingContent, JSON_UNESCAPED_UNICODE);
+        return $landingContent;
     }
 }
