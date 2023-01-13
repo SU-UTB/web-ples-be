@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContentController;
-use App\Http\Controllers\ContentLandingController;
+use App\Http\Controllers\Content\ContentLandingController;
+use App\Http\Controllers\Content\ContentReservationsController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SeatController;
 use App\Models\Reservation;
@@ -32,11 +33,11 @@ Route::get('pages/landing', [ContentLandingController::class, 'index']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
 
-    Route::get('seats', [SeatController::class, 'index']);
     //Route::resource('reservations', ReservationController::class);
+    Route::get('pages/reservations', [ContentLandingController::class, 'indexReservations']);
+
     Route::post('reservations', [ReservationController::class, 'store']);
     Route::get('reservations/search/{name}', [ReservationController::class, 'search']);
-
 });
 
 

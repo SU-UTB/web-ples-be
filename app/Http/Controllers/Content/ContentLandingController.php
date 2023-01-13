@@ -7,10 +7,9 @@ use App\Models\Contact;
 use App\Models\Content;
 use App\Models\LandingPageContent;
 use App\Models\LandingPageTicketContent;
+use App\Models\Seat;
 use App\Models\TicketContent;
 use Illuminate\Http\Request;
-use Tmp;
-
 class ContentLandingController extends Controller
 {
     /**
@@ -38,7 +37,18 @@ class ContentLandingController extends Controller
         $landingContent = $this->getLandingContent();
         return json_encode($landingContent, JSON_UNESCAPED_UNICODE);
     }
-
+    public function indexReservations()
+    {
+        $takenSeats = count(Seat::where('rezervace', '!=', null)->get());
+        $freeSeats = count(Seat::where('rezervace', '=', null)->get());
+        $seats = Seat::all();
+        $response = [
+            "freeSeats" => $freeSeats,
+            "takenSeats" => $takenSeats,
+            "seats" => $seats,
+        ];
+        return response($response, 200);
+    }
     public static function getLandingContent()
     {
         $contents = Content::all();
