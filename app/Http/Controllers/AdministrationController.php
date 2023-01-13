@@ -12,7 +12,7 @@ class AdministrationController extends Controller
     public function dashboard()
     {
         $data = [];
-        return view('administration/dashboard', ["data" => $data]);
+        return view('dashboard', ["data" => $data]);
     }
     public function reservations()
     {
