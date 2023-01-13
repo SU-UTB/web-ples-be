@@ -14,7 +14,7 @@ class AdministrationController extends Controller
         $data = [];
         return view('dashboard', ["data" => $data]);
     }
-    public function reservations()
+    public static function reservations()
     {
 
         $seats = Seat::whereNotNull('rezervace')->get()->toArray();

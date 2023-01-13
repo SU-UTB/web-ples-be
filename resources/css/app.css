@@ -6,3 +6,7 @@
 .btn-blue {
     @apply bg-blue-500 text-white;
   }
+  
+  .btn-orange {
+    @apply bg-orange-500 text-white;
+  }

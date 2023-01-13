@@ -140,6 +140,19 @@ class ReservationController extends Controller
         return view("reserved", $data);
     }
 
+
+    public function cancel(Request $request, $id)
+    {
+        $seats = Seat::where('rezervace', '=', $id)->get();
+
+        foreach ($seats as $seat) {
+            $seat->rezervace = null;
+            $seat->save();
+        }
+        $this->destroy($id);
+        return AdministrationController::reservations();
+    }
+
     public function sendEmail()
     {
         $data = array('name' => "Virat Gandhi");
@@ -205,6 +218,7 @@ class ReservationController extends Controller
     {
         return Reservation::where('name', 'like', '%' . $name . '%')->get();
     }
+
 
     public function reservationTest()
     {

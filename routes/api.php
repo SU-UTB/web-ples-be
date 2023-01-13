@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('seats', [SeatController::class, 'index']);
     //Route::resource('reservations', ReservationController::class);
+    Route::post('reservations', [ReservationController::class, 'store']);
     Route::get('reservations/search/{name}', [ReservationController::class, 'search']);
 
 });

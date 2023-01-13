@@ -45,6 +45,7 @@
                             <th scope="col">Pocet na stani</th>
                             <th scope="col">Cena celkem</th>
                             <th scope="col">Datum platby</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,13 +59,16 @@
                                 <td>{{ $reservation['stand'] }}</td>
                                 <td>{{ $reservation['price_all'] }}</td>
                                 <td>{{ $reservation['date_payment'] }}</td>
+                                <td>
+                                    <button type="submit" class="btn btn-orange">
+                                        <a href="{{ route('cancelReservation', $reservation['id']) }}">Cancel</a></button>
+                                </td>
                             </tr>
                             <tr>
                                 <td></td>
                                 <td scope="row">Sedadla</td>
                                 <td>@json($reservation['seats'])</td>
                             </tr>
-
                         @endforeach
 
 

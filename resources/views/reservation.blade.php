@@ -29,7 +29,7 @@
             </div>
             <div class="card-body">
                 <form name="add-blog-post-form" id="add-blog-post-form" method="post"
-                    action="{{ url('api/reservations/') }}">
+                    action="{{ url('admin/reservations') }}">
                     @csrf
                     <div class="form-group mt-2">
                         <label for="name" class="form-label">Jméno</label>
