@@ -13,10 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-/*         Schema::table('personal_access_tokens', function (Blueprint $table) {
-
-            $table->timestamp('expires_at')->nullable();
-        }); */
+        Schema::table('seats', function (Blueprint $table) {
+            $table->integer('rezervace')->nullable()->change();
+        });
     }
 
     /**
@@ -26,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-   /*      Schema::table('personal_access_tokens', function (Blueprint $table) {
-            $table->dropColumn('expires_at');
-        }); */
+        Schema::table('seats', function (Blueprint $table) {
+            $table->integer('rezervace')->change();
+        });
     }
 };
