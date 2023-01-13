@@ -23,6 +23,9 @@
                     </x-nav-link>
                       <x-nav-link :href="route('contactsEdit')" :active="request()->routeIs('contactsEdit')">
                         {{ __('Landing/Contacts') }}
+                    </x-nav-link>         
+                                 <x-nav-link :href="route('ticketsEdit')" :active="request()->routeIs('ticketsEdit')">
+                        {{ __('Landing/Tickets') }}
                     </x-nav-link>
                 </div>
             </div>

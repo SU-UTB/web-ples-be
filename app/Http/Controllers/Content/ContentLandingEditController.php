@@ -45,6 +45,13 @@ class ContentLandingEditController extends Controller
 
         return view('administration/content/landingContacts', ['data' => $landingContent->contacts]);
     }
+    public function indexTickets()
+    {
+
+        $landingContent = ContentLandingController::getLandingContent();
+
+        return view('administration/content/landingTickets', ['data' => $landingContent->tickets]);
+    }
 
 
     ///UPDATES
@@ -67,5 +74,15 @@ class ContentLandingEditController extends Controller
         ]);
 
         return $this->indexContacts();
+    }
+    public function updateTicketsDate(Request $request)
+    {
+
+        $tickets = TicketContent::find(1);
+        $tickets->reservation_from = $request->input('reservations_from');
+        $tickets->save();
+
+
+        return $this->indexTickets();
     }
 }
