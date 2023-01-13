@@ -56,7 +56,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="seat">Sedadla</label>
-                        <select class="form-control" name="seats" id="seats" multiple>
+                        <select class="form-control" name="seats[]" id="seats"  multiple="multiple">
                             @foreach ($seats as $seat)
                                 <option value="{{ $seat['id'] }}">{{ $seat['alias'] }}</option>
                             @endforeach

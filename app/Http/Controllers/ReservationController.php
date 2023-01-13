@@ -129,7 +129,6 @@ class ReservationController extends Controller
                 'date_payment' => Carbon::now()
             ]
         );
-
         $seats = Seat::findMany($request->input('seats'))->toArray();
         $this->updateSeats($seats, $reservation->id);
 
