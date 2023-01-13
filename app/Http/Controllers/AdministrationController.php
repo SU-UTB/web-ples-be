@@ -8,11 +8,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
 class AdministrationController extends Controller
-{
+{ 
     public function dashboard()
     {
-        $data = [];
-        return view('dashboard', ["data" => $data]);
+        $takenSeats = count(Seat::where('rezervace', '!=', null)->get());
+        $freeSeats = count(Seat::where('rezervace', '=', null)->get());
+        $priceAll = array_sum(array_map(function($r)
+        {
+            return $r['price_all'];
+        }, Reservation::all()->toArray()));
+        return view('dashboard', [
+            "freeSeats" => $freeSeats,
+            "takenSeats" => $takenSeats,
+            "moneyRaised" => $priceAll,
+    ]);
     }
     public static function reservations()
     {
