@@ -31,19 +31,41 @@ class ContentLandingEditController extends Controller
      *   @OA\Response(response=404, description="Not Found")
      *  )
      */
-    public function index()
+    public function indexLanding()
     {
 
         $landingContent = ContentLandingController::getLandingContent();
 
         return view('administration/content/landing', ['data' => $landingContent]);
     }
+    public function indexContacts()
+    {
+
+        $landingContent = ContentLandingController::getLandingContent();
+
+        return view('administration/content/landingContacts', ['data' => $landingContent->contacts]);
+    }
+
+
+    ///UPDATES
+
 
     public function updateContent(Request $request, $id)
     {
         $content = Content::find($id);
         $content->update(['content' => $request->input('content')]);
-        
-        return $this->index();
+
+        return $this->indexLanding();
+    }
+    public function updateContact(Request $request, $id)
+    {
+        $contact = Contact::find($id);
+        $contact->update([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'phone' => $request->input('phone')
+        ]);
+
+        return $this->indexContacts();
     }
 }

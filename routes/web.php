@@ -27,8 +27,10 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin', [AdministrationController::class, 'dashboard'])->name('dashboard');
     Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
-    Route::get('/admin/content/landing', [ContentLandingEditController::class, 'index'])->name('landingEdit');
+    Route::get('/admin/content/landing', [ContentLandingEditController::class, 'indexLanding'])->name('landingEdit');
+    Route::get('/admin/content/landing/contacts', [ContentLandingEditController::class, 'indexContacts'])->name('contactsEdit');
     Route::put('/admin/content/landing/{id}', [ContentLandingEditController::class, 'updateContent'])->name('updateLandingContent');
+    Route::put('/admin/content/landing/contacts/{id}', [ContentLandingEditController::class, 'updateContact'])->name('updateContact');
 
     Route::get('test/reservation' , [ReservationController::class, 'reservationTest'])->name('reservationTest');
     Route::post('/admin/reservations', [ReservationController::class, 'store']);
