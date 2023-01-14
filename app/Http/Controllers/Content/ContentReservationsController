@@ -1,0 +1,17 @@
+<?php
+namespace App\Http\Controllers\Content;
+
+use App\Http\Controllers\Controller;
+use App\Models\Contact;
+use App\Models\Content;
+use App\Models\LandingPageContent;
+use App\Models\LandingPageTicketContent;
+use App\Models\Seat;
+use App\Models\TicketContent;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+
+class ContentReservationsController extends Controller
+{
+
+}
