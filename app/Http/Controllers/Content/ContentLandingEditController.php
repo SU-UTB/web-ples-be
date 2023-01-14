@@ -15,8 +15,8 @@ class ContentLandingEditController extends Controller
 {
     /**
      * @OA\Get(
-     *    path="/api/pages/landing",
-     *    tags={"Pages"},
+     *    path="/admin/content/landing",
+     *    tags={"Admin"},
      *    summary="Get content of landing page",
      *    description="Get content of landing page",
      *      @OA\Response(
@@ -38,6 +38,24 @@ class ContentLandingEditController extends Controller
 
         return view('administration/content/landing', ['data' => $landingContent]);
     }
+    /**
+     * @OA\Get(
+     *    path="/admin/content/landing/contacts",
+     *    tags={"Admin"},
+     *    summary="Get content of landing page",
+     *    description="Get content of landing page",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(ref="#/components/schemas/LandingPageContent")
+     *          )
+     *       ),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     *  )
+     */
     public function indexContacts()
     {
 
@@ -45,6 +63,25 @@ class ContentLandingEditController extends Controller
 
         return view('administration/content/landingContacts', ['data' => $landingContent->contacts]);
     }
+
+        /**
+     * @OA\Get(
+     *    path="/admin/content/landing/tickets",
+     *    tags={"Admin"},
+     *    summary="Get content of landing page",
+     *    description="Get content of landing page",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *      @OA\MediaType(
+     *          mediaType="application/json",
+     *          @OA\Schema(ref="#/components/schemas/LandingPageContent")
+     *          )
+     *       ),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     *  )
+     */
     public function indexTickets()
     {
 

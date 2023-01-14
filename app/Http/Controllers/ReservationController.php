@@ -90,14 +90,14 @@ class ReservationController extends Controller
      *                     property="seats",
      *                     type="integer"
      *                 ),
-     * @OA\Property(
-     *      type="array",
-     *      @OA\Items(
-     *          type="array",
-     *          @OA\Items()
-     *      ),
-     *      description="List of Seat ids"
-     * ),
+                    * @OA\Property(
+                    *      type="array",
+                    *      @OA\Items(
+                    *          type="array",
+                    *          @OA\Items()
+                    *      ),
+                    *      description="List of Seat ids"
+                    * ),
      *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
      *             )
      *         )

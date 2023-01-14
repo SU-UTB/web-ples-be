@@ -33,7 +33,34 @@ class AuthController extends Controller
 
         return response($response, 201);
     }
+    /**
+     * @OA\Post(
+     *   tags={"Authentication"},
+     *   path="/api/login",
+     *   summary="Logs in",
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+  
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),     
+     *                @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
 
+     *                 example={ "email": "sedlar@sutb.cz", "password": "examplePasword"}
+     *             )
+     *         )
+     *     ),
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     */
     public function login(Request $request)
     {
         $fields = $request->validate([
@@ -52,7 +79,7 @@ class AuthController extends Controller
 
             return response([
                 'message' => 'Bad credentials.'
-            ],401);
+            ], 401);
         }
 
 
@@ -65,7 +92,17 @@ class AuthController extends Controller
 
         return response($response, 201);
     }
+    /**
+     * @OA\Post(
+     *   tags={"Authentication"},
+     *   path="/api/logout",
+     *   summary="Logs out",
 
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
+     * )
+     */
     public function logout(Request $request)
     {
 

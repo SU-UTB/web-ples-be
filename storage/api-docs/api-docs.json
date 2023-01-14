@@ -19,6 +19,67 @@
         }
     ],
     "paths": {
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logs in",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "email": "sedlar@sutb.cz",
+                                    "password": "examplePasword"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logs out",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
         "/api/pages/landing": {
             "get": {
                 "tags": [
@@ -26,7 +87,144 @@
                 ],
                 "summary": "Get content of landing page",
                 "description": "Get content of landing page",
-                "operationId": "9c8f8932487a49920c33f3d3eb4dd88f",
+                "operationId": "2b8758e2c5b79d843094e7e58d201a62",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LandingPageContent"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/pages/reservations": {
+            "get": {
+                "tags": [
+                    "Pages"
+                ],
+                "summary": "Get content of reservations page",
+                "description": "Get content of reservations page",
+                "operationId": "1a6fd621543321d807791e301120588a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "takenSeats": {
+                                            "type": "integer"
+                                        },
+                                        "freeSeats": {
+                                            "type": "integer"
+                                        },
+                                        "": {
+                                            "description": "List of Seat ids",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "array",
+                                                "items": {}
+                                            }
+                                        }
+                                    },
+                                    "type": "object",
+                                    "example": {
+                                        "takenSeats": 3,
+                                        "freeSeats": 7,
+                                        "seats": [
+                                            3,
+                                            54,
+                                            645
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/admin/content/landing": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get content of landing page",
+                "description": "Get content of landing page",
+                "operationId": "052a2b8f7a372bc82bdeeafed078b595",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LandingPageContent"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/admin/content/landing/contacts": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get content of landing page",
+                "description": "Get content of landing page",
+                "operationId": "be61a6df34b5ae4f0d9ca9e1039f3491",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LandingPageContent"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/admin/content/landing/tickets": {
+            "get": {
+                "tags": [
+                    "Admin"
+                ],
+                "summary": "Get content of landing page",
+                "description": "Get content of landing page",
+                "operationId": "723db79ec028601300d481e65bc1c0eb",
                 "responses": {
                     "200": {
                         "description": "Successful operation",
@@ -159,9 +357,37 @@
     },
     "components": {
         "schemas": {
+            "Contact": {},
+            "Content": {},
             "LandingPageContent": {
+                "properties": {
+                    "contents": {},
+                    "contacts": {},
+                    "tickets": {
+                        "$ref": "#/components/schemas/LandingPageTicketContent"
+                    }
+                },
                 "type": "object"
-            }
+            },
+            "LandingPageTicketContent": {
+                "properties": {
+                    "reservations_from": {
+                        "type": "string"
+                    },
+                    "contact": {
+                        "$ref": "#/components/schemas/Contact"
+                    }
+                },
+                "type": "object"
+            },
+            "Reservation": {
+                "properties": {
+                    "seats": {}
+                },
+                "type": "object"
+            },
+            "Seat": {},
+            "TicketContent": {}
         }
     }
 }

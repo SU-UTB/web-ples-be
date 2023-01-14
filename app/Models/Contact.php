@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+/**
+ * @OA\Schema(schema="Contact")
+ */
 class Contact extends Model
 {
     use HasFactory;
