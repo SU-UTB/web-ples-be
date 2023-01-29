@@ -134,7 +134,7 @@ class ReservationController extends Controller
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
 
-        EmailSendingController::sendEmail($data);
+        EmailSendingController::sendEmail(EmailContent::Cancel, $data);
 
         return view("reserved", $data);
     }

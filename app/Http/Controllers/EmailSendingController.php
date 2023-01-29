@@ -33,23 +33,20 @@ class EmailSendingController extends Controller
     }
 
 
-    public static function sendEmail($data)
+    public static function sendEmail(EmailContent $type, $data)
     {
         $apiInstance = EmailSendingController::initialize();
         $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
-        $sendSmtpEmail['subject'] = 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
+        $sendSmtpEmail['subject'] = EmailSendingController::getEmailSubject($type);
         $sendSmtpEmail['sender'] = array('name' => 'Ples UTB', 'email' => 'ples@sutb.cz');
         $sendSmtpEmail['to'] = array(
             array('email' => $data['reservation']->email, 'name' => $data['reservation']->name)
         );
 
-        $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/ReservationTemplate.htm');
-        $prepareContent = str_replace("{{count}}", count($data['seats']), $prepareContent);
-        //TODO
-        $prepareContent = str_replace("{{table}}", "x", $prepareContent);
-        $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
-        $sendSmtpEmail['htmlContent'] = $prepareContent;
-        
+        $content = EmailSendingController::getEmailContent($type, $data);
+
+        $sendSmtpEmail['htmlContent'] = $content;
+
         try {
             $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
             print_r($result);
@@ -57,4 +54,34 @@ class EmailSendingController extends Controller
             echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
         }
     }
+
+    private static function getEmailContent(EmailContent $type, $data)
+    {
+        switch ($type) {
+            case EmailContent::Reserve:
+                $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/ReservationTemplate.htm');
+                $prepareContent = str_replace("{{count}}", count($data['seats']), $prepareContent);
+                //TODO
+                $prepareContent = str_replace("{{table}}", "x", $prepareContent);
+                $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
+                return $prepareContent;
+            case EmailContent::Cancel:
+                return file_get_contents(dirname(__DIR__, 2) . '/View/Email/CancelTemplate.htm');
+        }
+    }
+    private static function getEmailSubject(EmailContent $type)
+    {
+        switch ($type) {
+            case EmailContent::Reserve:
+                return 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
+            case EmailContent::Cancel:
+                return 'Reprezentační ples UTB 2023 - Zrušení rezervace';
+        }
+    }
+}
+
+enum EmailContent
+{
+    case Reserve;
+    case Cancel;
 }
