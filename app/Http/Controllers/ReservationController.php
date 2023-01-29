@@ -118,15 +118,20 @@ class ReservationController extends Controller
             'tel' => 'required',
             'consent' => 'required'
         ]);
+        $seatsData =  json_decode($request->input('seats'), true);
 
-        if ($request->input('stand') == 0 &&  count($request->input('seats') ?? []) == 0) {
+        if ($request->input('stand') == 0 &&  count($seatsData ?? []) == 0) {
             return response()->json([
                 'message' => 'Either seats or stand tickets must be filled!'
             ], 400);
         }
 
         $stand = $request->input('stand') ?? 0;
-        $price = 500;
+
+        $seats = Seat::findMany($seatsData)->toArray();
+
+        $totalPrice = $this->getStandPrice($stand) + $this->getSeatsPrice($seats);
+
         $reservation = Reservation::create(
             [
                 'name' =>  $request->input('name'),
@@ -134,20 +139,43 @@ class ReservationController extends Controller
                 'tel' => $request->input('tel'),
                 'note' => $request->input('note'),
                 'stand' => $stand,
-                'price_all' => $stand * $price,
+                'price_all' => $totalPrice,
                 'status' => 1,
                 'consent' => (int)$request->input('consent'),
                 'date_payment' => Carbon::now()
             ]
         );
-        $seats = Seat::findMany()->toArray();
+
+
         $this->updateSeats($seats, $reservation->id);
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
 
-        // $this->sendEmail();
+        return response()->json($data, 200);
+    }
 
-        return view("reserved", $data);
+    private function getStandPrice($stand)
+    {
+        $priceStand = 350;
+        return $stand * $priceStand;
+    }
+    private function getSeatsPrice($seats)
+    {
+
+        $priceSit = 500;
+        $priceSitRaut = 750;
+
+        $totalPrice = 0;
+        foreach ($seats as $seat) {
+            if ($seat['typ'] == "raut") {
+                $totalPrice += $priceSitRaut;
+            } else {
+
+                $totalPrice += $priceSit;
+            }
+        }
+
+        return $totalPrice;
     }
 
 
