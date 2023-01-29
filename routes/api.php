@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 //Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('pages/landing', [ContentLandingController::class, 'index']);
-Route::get('email/send', [EmailSendingController::class, 'sendEmail']);
+Route::get('email/send', [EmailSendingController::class, 'index']);
 
 
 // Protected routes

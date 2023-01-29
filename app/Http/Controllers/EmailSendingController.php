@@ -32,20 +32,24 @@ class EmailSendingController extends Controller
         }
     }
 
-    public static function sendEmail()
+
+    public static function sendEmail($data)
     {
         $apiInstance = EmailSendingController::initialize();
         $sendSmtpEmail = new \SendinBlue\Client\Model\SendSmtpEmail();
-        $sendSmtpEmail['subject'] = 'Reprezentacni ples UTB 2023';
-        $sendSmtpEmail['sender'] = array('name' => 'Reprezentacni ples utb', 'email' => 'ples@sutb.cz');
+        $sendSmtpEmail['subject'] = 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
+        $sendSmtpEmail['sender'] = array('name' => 'Ples UTB', 'email' => 'ples@sutb.cz');
         $sendSmtpEmail['to'] = array(
-            array('email' => 'sedlar@sutb.cz', 'name' => 'Davca')
+            array('email' => $data['reservation']->email, 'name' => $data['reservation']->name)
         );
-        $sendSmtpEmail['textContent'] = 'cau cau';
 
-        $sendSmtpEmail['headers'] = array('Some-Custom-Name' => 'unique-id-12s34');
-        $sendSmtpEmail['params'] = array('parameter' => 'My param value', 'subject' => 'New Subject');
-
+        $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/ReservationTemplate.htm');
+        $prepareContent = str_replace("{{count}}", count($data['seats']), $prepareContent);
+        //TODO
+        $prepareContent = str_replace("{{table}}", "x", $prepareContent);
+        $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
+        $sendSmtpEmail['htmlContent'] = $prepareContent;
+        
         try {
             $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
             print_r($result);
