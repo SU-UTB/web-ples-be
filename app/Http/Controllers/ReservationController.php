@@ -118,9 +118,9 @@ class ReservationController extends Controller
             'tel' => 'required',
             'consent' => 'required'
         ]);
-        $seatsData =  json_decode($request->input('seats'), true);
+        $seatsData = json_decode($request->input('seats'), true);
 
-        if ($request->input('stand') == 0 &&  count($seatsData ?? []) == 0) {
+        if ($request->input('stand') == 0 && count($seatsData ?? []) == 0) {
             return response()->json([
                 'message' => 'Either seats or stand tickets must be filled!'
             ], 400);
@@ -167,7 +167,7 @@ class ReservationController extends Controller
 
         $totalPrice = 0;
         foreach ($seats as $seat) {
-            if ($seat['typ'] == "raut") {
+            if ($seat['typ'] == 'raut') {
                 $totalPrice += $priceSitRaut;
             } else {
 
