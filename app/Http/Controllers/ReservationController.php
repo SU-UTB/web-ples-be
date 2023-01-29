@@ -90,14 +90,14 @@ class ReservationController extends Controller
      *                     property="seats",
      *                     type="integer"
      *                 ),
-                    * @OA\Property(
-                    *      type="array",
-                    *      @OA\Items(
-                    *          type="array",
-                    *          @OA\Items()
-                    *      ),
-                    *      description="List of Seat ids"
-                    * ),
+     * @OA\Property(
+     *      type="array",
+     *      @OA\Items(
+     *          type="array",
+     *          @OA\Items()
+     *      ),
+     *      description="List of Seat ids"
+     * ),
      *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
      *             )
      *         )
@@ -140,7 +140,7 @@ class ReservationController extends Controller
     }
 
 
-    public function cancel(Request $request, $id)
+    public function cancel($id)
     {
         $seats = Seat::where('rezervace', '=', $id)->get();
 
@@ -148,8 +148,12 @@ class ReservationController extends Controller
             $seat->rezervace = null;
             $seat->save();
         }
-        $this->destroy($id);
-        return AdministrationController::reservations();
+
+        $reservation = Reservation::find($id);
+        $reservation->status = 0;
+        $reservation->save();
+
+        return  response()->json("Reservation canceled", 200);
     }
 
     public function sendEmail()
@@ -223,5 +227,19 @@ class ReservationController extends Controller
     {
         $seats = Seat::all()->toArray();
         return view('reservation', ["seats" => $seats]);
+    }
+
+    public  function cancelUnpaidReservations()
+    {
+        $reservations = Reservation::all();
+
+        foreach ($reservations as $reservation) {
+            $now = Carbon::now();
+
+            //&& $now->diffInBusinessDays($reservation->created_at) > 3
+            if ($reservation->date_payment == null) {
+                $this->cancel($reservation->id);
+            }
+        }
     }
 }
