@@ -142,7 +142,7 @@ class ReservationController extends Controller
                 'price_all' => $totalPrice,
                 'status' => 1,
                 'consent' => (int)$request->input('consent'),
-                'date_payment' => Carbon::now()
+                'date_payment' => null
             ]
         );
 
