@@ -90,14 +90,14 @@ class ReservationController extends Controller
      *                     property="seats",
      *                     type="integer"
      *                 ),
-                    * @OA\Property(
-                    *      type="array",
-                    *      @OA\Items(
-                    *          type="array",
-                    *          @OA\Items()
-                    *      ),
-                    *      description="List of Seat ids"
-                    * ),
+     * @OA\Property(
+     *      type="array",
+     *      @OA\Items(
+     *          type="array",
+     *          @OA\Items()
+     *      ),
+     *      description="List of Seat ids"
+     * ),
      *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
      *             )
      *         )
@@ -134,7 +134,7 @@ class ReservationController extends Controller
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
 
-        // $this->sendEmail();
+        EmailSendingController::sendEmail();
 
         return view("reserved", $data);
     }
@@ -152,14 +152,7 @@ class ReservationController extends Controller
         return AdministrationController::reservations();
     }
 
-    public function sendEmail()
-    {
-        $data = array('name' => "Virat Gandhi");
-        Mail::send(['text' => 'mail'], $data, function ($message) {
-            $message->to('sedlar@sutb.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
-            $message->from('sedlar@sutb.com', 'DS');
-        });
-    }
+
 
     private function updateSeats($seats, $reservationId)
     {
