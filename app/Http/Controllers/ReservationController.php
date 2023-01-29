@@ -7,6 +7,7 @@ use App\Models\Seat;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -90,14 +91,14 @@ class ReservationController extends Controller
      *                     property="seats",
      *                     type="integer"
      *                 ),
-                    * @OA\Property(
-                    *      type="array",
-                    *      @OA\Items(
-                    *          type="array",
-                    *          @OA\Items()
-                    *      ),
-                    *      description="List of Seat ids"
-                    * ),
+     * @OA\Property(
+     *      type="array",
+     *      @OA\Items(
+     *          type="array",
+     *          @OA\Items()
+     *      ),
+     *      description="List of Seat ids"
+     * ),
      *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
      *             )
      *         )
@@ -111,9 +112,19 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
 
-        //   $request->validate([
-        //      'name' => 'required'
-        // ]);
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'tel' => 'required',
+            'consent' => 'required'
+        ]);
+
+        if ($request->input('stand') == 0 &&  count($request->input('seats') ?? []) == 0) {
+            return response()->json([
+                'message' => 'Either seats or stand tickets must be filled!'
+            ], 400);
+        }
+
         $stand = $request->input('stand') ?? 0;
         $price = 500;
         $reservation = Reservation::create(
@@ -129,7 +140,7 @@ class ReservationController extends Controller
                 'date_payment' => Carbon::now()
             ]
         );
-        $seats = Seat::findMany($request->input('seats'))->toArray();
+        $seats = Seat::findMany()->toArray();
         $this->updateSeats($seats, $reservation->id);
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
