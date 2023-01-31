@@ -151,6 +151,7 @@ class ReservationController extends Controller
 
         $data = ['reservation' => $reservation, 'seats' => $seats];
 
+        EmailSendingController::sendEmail(EmailContent::Cancel, $data);
         return response()->json($data, 200);
     }
 
@@ -191,14 +192,7 @@ class ReservationController extends Controller
         return AdministrationController::reservations();
     }
 
-    public function sendEmail()
-    {
-        $data = array('name' => "Virat Gandhi");
-        Mail::send(['text' => 'mail'], $data, function ($message) {
-            $message->to('sedlar@sutb.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
-            $message->from('sedlar@sutb.com', 'DS');
-        });
-    }
+
 
     private function updateSeats($seats, $reservationId)
     {
