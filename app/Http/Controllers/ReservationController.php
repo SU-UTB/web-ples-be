@@ -147,9 +147,9 @@ class ReservationController extends Controller
         );
 
 
-        $this->updateSeats($seats, $reservation->id);
+        $updatedSeats =  $this->updateSeats($seats, $reservation->id);
 
-        $data = ['reservation' => $reservation, 'seats' => $seats];
+        $data = ['reservation' => $reservation, 'seats' => $updatedSeats];
 
         // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
         return response()->json($data, 200);
@@ -201,6 +201,7 @@ class ReservationController extends Controller
             $seat->rezervace = $reservationId;
             $seat->save();
         }
+        return Seat::all()->where('rezervace', '=', $reservationId)->toArray();
     }
 
     /**
