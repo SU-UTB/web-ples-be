@@ -21,8 +21,8 @@ class Reservation extends Model
         'stand',
         'price_all',
         'status',
-        'date_reservation',
-        'date_payment'
+        'date_payment',
+        'consent'
     ];
 
 

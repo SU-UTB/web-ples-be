@@ -7,6 +7,7 @@ use App\Models\Seat;
 use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 
 /**
@@ -90,14 +91,14 @@ class ReservationController extends Controller
      *                     property="seats",
      *                     type="integer"
      *                 ),
-                    * @OA\Property(
-                    *      type="array",
-                    *      @OA\Items(
-                    *          type="array",
-                    *          @OA\Items()
-                    *      ),
-                    *      description="List of Seat ids"
-                    * ),
+     * @OA\Property(
+     *      type="array",
+     *      @OA\Items(
+     *          type="array",
+     *          @OA\Items()
+     *      ),
+     *      description="List of Seat ids"
+     * ),
      *                 example={"name": "David Sedlar", "email": "sedlar@sutb.cz", "tel": 555222555, "note" :"Popici ples, chci celej stul...","stand" :3, "seats" : {2, 3,5}}
      *             )
      *         )
@@ -111,32 +112,71 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
 
-        //   $request->validate([
-        //      'name' => 'required'
-        // ]);
+        /*         $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'tel' => 'required',
+            'consent' => 'required'
+        ]); */
+        $seatsData = json_decode($request->input('seats'), true);
+
+        if ($request->input('stand') == 0 && count($seatsData ?? []) == 0) {
+            return response()->json([
+                'message' => 'Either seats or stand tickets must be filled!'
+            ], 400);
+        }
+
         $stand = $request->input('stand') ?? 0;
-        $price = 500;
+
+        $seats = Seat::findMany($seatsData)->toArray();
+
+        $totalPrice = $this->getStandPrice($stand) + $this->getSeatsPrice($seats);
+
         $reservation = Reservation::create(
             [
-                'name' =>  $request->input('name'),
-                'email' => $request->input('email'),
-                'tel' => $request->input('tel'),
-                'note' => $request->input('note'),
+                'name' => 'Admin', //  $request->input('name'),
+                'email' => 'ples@sutb.cz', //  $request->input('email'),
+                'tel' => '', //  $request->input('tel'),
+                'note' => '', $request->input('note'),
                 'stand' => $stand,
-                'price_all' => $stand * $price,
+                'price_all' => $totalPrice,
                 'status' => 1,
-                //'date_reservation' => Carbon::now(),
+                'consent' => 1, //(int)$request->input('consent'),
                 'date_payment' => Carbon::now()
             ]
         );
-        $seats = Seat::findMany($request->input('seats'))->toArray();
-        $this->updateSeats($seats, $reservation->id);
 
-        $data = ['reservation' => $reservation, 'seats' => $seats];
 
-        // $this->sendEmail();
+        $updatedSeats =  $this->updateSeats($seats, $reservation->id);
 
-        return view("reserved", $data);
+        $data = ['reservation' => $reservation, 'seats' => $updatedSeats];
+
+        // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
+        return response()->json($data, 200);
+    }
+
+    private function getStandPrice($stand)
+    {
+        $priceStand = 350;
+        return $stand * $priceStand;
+    }
+    private function getSeatsPrice($seats)
+    {
+
+        $priceSit = 500;
+        $priceSitRaut = 750;
+
+        $totalPrice = 0;
+        foreach ($seats as $seat) {
+            if ($seat['typ'] == 'raut') {
+                $totalPrice += $priceSitRaut;
+            } else {
+
+                $totalPrice += $priceSit;
+            }
+        }
+
+        return $totalPrice;
     }
 
 
@@ -152,14 +192,7 @@ class ReservationController extends Controller
         return AdministrationController::reservations();
     }
 
-    public function sendEmail()
-    {
-        $data = array('name' => "Virat Gandhi");
-        Mail::send(['text' => 'mail'], $data, function ($message) {
-            $message->to('sedlar@sutb.com', 'Tutorials Point')->subject('Laravel Basic Testing Mail');
-            $message->from('sedlar@sutb.com', 'DS');
-        });
-    }
+
 
     private function updateSeats($seats, $reservationId)
     {
@@ -168,6 +201,7 @@ class ReservationController extends Controller
             $seat->rezervace = $reservationId;
             $seat->save();
         }
+        return Seat::all()->where('rezervace', '=', $reservationId)->toArray();
     }
 
     /**
