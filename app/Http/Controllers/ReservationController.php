@@ -112,12 +112,12 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
 
-        $request->validate([
+        /*         $request->validate([
             'name' => 'required',
             'email' => 'required',
             'tel' => 'required',
             'consent' => 'required'
-        ]);
+        ]); */
         $seatsData = json_decode($request->input('seats'), true);
 
         if ($request->input('stand') == 0 && count($seatsData ?? []) == 0) {
@@ -134,24 +134,24 @@ class ReservationController extends Controller
 
         $reservation = Reservation::create(
             [
-                'name' =>  $request->input('name'),
-                'email' => $request->input('email'),
-                'tel' => $request->input('tel'),
-                'note' => $request->input('note'),
+                'name' => 'Admin', //  $request->input('name'),
+                'email' => 'ples@sutb.cz', //  $request->input('email'),
+                'tel' => '', //  $request->input('tel'),
+                'note' => '', $request->input('note'),
                 'stand' => $stand,
                 'price_all' => $totalPrice,
                 'status' => 1,
-                'consent' => (int)$request->input('consent'),
-                'date_payment' => null
+                'consent' => 1, //(int)$request->input('consent'),
+                'date_payment' => Carbon::now()
             ]
         );
 
 
-        $this->updateSeats($seats, $reservation->id);
+        $updatedSeats =  $this->updateSeats($seats, $reservation->id);
 
-        $data = ['reservation' => $reservation, 'seats' => $seats];
+        $data = ['reservation' => $reservation, 'seats' => $updatedSeats];
 
-        EmailSendingController::sendEmail(EmailContent::Cancel, $data);
+        // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
         return response()->json($data, 200);
     }
 
@@ -201,6 +201,7 @@ class ReservationController extends Controller
             $seat->rezervace = $reservationId;
             $seat->save();
         }
+        return Seat::all()->where('rezervace', '=', $reservationId)->toArray();
     }
 
     /**
