@@ -1,4 +1,4 @@
-@php
+mmenteo@php
     $aDashboard = '';
     $aReservations = '';
     $aLandingContent = '';
@@ -27,7 +27,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ $aReservations }}" href="/admin/reservations">Reservations</a>
             </li>
-            <li class="nav-item">
+            {{--        <li class="nav-item">
                 <a class="nav-link {{ $aLandingContent }}" href="/admin/content/landing">Landing/Content</a>
             </li>
             <li class="nav-item">
@@ -36,7 +36,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ $aLandingTickets }}" href="/admin/content/landing/tickets">Landing/Tickets</a>
             </li>
-
+ --}}
         </ul>
 
     </div>
