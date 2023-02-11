@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AvailableStands;
 use App\Models\Reservation;
 use App\Models\Seat;
 use DateTime;
@@ -126,7 +127,23 @@ class ReservationController extends Controller
             ], 400);
         }
 
-        $stand = $request->input('stand') ?? 0;
+        $availableStands = AvailableStands::find(1);
+       
+        if ((int)($request->input('stand') ?? 0) > $availableStands->count) {
+            return response()->json([
+                'error' => 'Count of stands is higher than available count!',
+                'requested_stands' => $request->input('stand') ,
+                'available_count' => $availableStands->count ,
+            ], 400);
+        }
+        else{
+            $availableStands->update([
+                'count' =>  $availableStands->count - (int)$request->input('stand'),
+            ]);
+            $availableStands->save();
+        }
+
+        $stand = (int)($request->input('stand') ?? 0);
 
         $seats = Seat::findMany($seatsData)->toArray();
 
@@ -209,6 +226,11 @@ class ReservationController extends Controller
             $seat->rezervace = null;
             $seat->save();
         }
+        $availableStands = AvailableStands::find(1);
+        $availableStands->update([
+            'count' =>  $availableStands->count + Reservation::find($id)->stand,
+        ]);
+        $availableStands->save();
         $this->destroy($id);
         return AdministrationController::reservations();
     }

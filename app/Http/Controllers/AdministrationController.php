@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AvailableStands;
 use App\Models\Reservation;
 use App\Models\Seat;
 use Illuminate\Http\Request;
@@ -17,10 +18,12 @@ class AdministrationController extends Controller
         {
             return $r['price_all'];
         }, Reservation::all()->toArray()));
+        $availableStands = AvailableStands::find(1);
         return view('dashboard', [
             "freeSeats" => $freeSeats,
             "takenSeats" => $takenSeats,
             "moneyRaised" => $priceAll,
+            "availableStands" =>$availableStands->count
     ]);
     }
     public static function reservations()

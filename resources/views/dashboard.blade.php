@@ -11,7 +11,8 @@
                 <div class="p-6 text-gray-900">
                     <p>Free seats: {{ $freeSeats }}</p>
                     <p>Taken seats: {{ $takenSeats }}</p>
-                    <p>Momey raised: {{ $moneyRaised }}</p>
+                    <p>Available stands: {{ $availableStands }}</p>
+                    <p>Money raised: {{ $moneyRaised }} CZK</p>
                 </div>
             </div>
         </div>
