@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AvailableStands;
 use App\Models\Reservation;
 use App\Models\Seat;
 use DateTime;
@@ -126,9 +127,36 @@ class ReservationController extends Controller
             ], 400);
         }
 
-        $stand = $request->input('stand') ?? 0;
+        $availableStands = AvailableStands::find(1);
+       
+        if ((int)($request->input('stand') ?? 0) > $availableStands->count) {
+            return response()->json([
+                'error' => 'Count of stands is higher than available count!',
+                'requested_stands' => $request->input('stand') ,
+                'available_count' => $availableStands->count ,
+            ], 400);
+        }
+        else{
+            $availableStands->update([
+                'count' =>  $availableStands->count - (int)$request->input('stand'),
+            ]);
+            $availableStands->save();
+        }
+
+        $stand = (int)($request->input('stand') ?? 0);
 
         $seats = Seat::findMany($seatsData)->toArray();
+
+        if ($this->array_any($seats, function ($seat) {
+            return  $seat['rezervace'] !== null;
+        })) {
+            return response()->json([
+                'error' => 'Some seats already have a reservation!',
+                'full_seats' => array_filter($seats, function ($seat) {
+                    return $seat['rezervace'] != null;
+                })
+            ], 400);
+        }
 
         $totalPrice = $this->getStandPrice($stand) + $this->getSeatsPrice($seats);
 
@@ -137,7 +165,7 @@ class ReservationController extends Controller
                 'name' => 'Admin', //  $request->input('name'),
                 'email' => 'ples@sutb.cz', //  $request->input('email'),
                 'tel' => '', //  $request->input('tel'),
-                'note' => '', $request->input('note'),
+                'note' =>  $request->input('note') ?? '',
                 'stand' => $stand,
                 'price_all' => $totalPrice,
                 'status' => 1,
@@ -153,6 +181,16 @@ class ReservationController extends Controller
 
         // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
         return response()->json($data, 200);
+    }
+
+    private function array_any(array $array, callable $fn)
+    {
+        foreach ($array as $value) {
+            if ($fn($value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function getStandPrice($stand)
@@ -188,6 +226,11 @@ class ReservationController extends Controller
             $seat->rezervace = null;
             $seat->save();
         }
+        $availableStands = AvailableStands::find(1);
+        $availableStands->update([
+            'count' =>  $availableStands->count + Reservation::find($id)->stand,
+        ]);
+        $availableStands->save();
         $this->destroy($id);
         return AdministrationController::reservations();
     }
