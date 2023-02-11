@@ -165,7 +165,7 @@ class ReservationController extends Controller
                 'name' => 'Admin', //  $request->input('name'),
                 'email' => 'ples@sutb.cz', //  $request->input('email'),
                 'tel' => '', //  $request->input('tel'),
-                'note' => '', $request->input('note'),
+                'note' =>  $request->input('note') ?? '',
                 'stand' => $stand,
                 'price_all' => $totalPrice,
                 'status' => 1,
