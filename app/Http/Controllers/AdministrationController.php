@@ -14,6 +14,8 @@ class AdministrationController extends Controller
     {
         $takenSeats = count(Seat::where('rezervace', '!=', null)->get());
         $freeSeats = count(Seat::where('rezervace', '=', null)->get());
+        $freeWithRautSeats = count(Seat::where('rezervace', '=', null)->where('typ', '=', 'raut')->get());
+        $freeNormalSeats = count(Seat::where('rezervace', '=', null)->where('typ', '=', 'normal')->get());
         $priceAll = array_sum(array_map(function($r)
         {
             return $r['price_all'];
@@ -23,7 +25,9 @@ class AdministrationController extends Controller
             "freeSeats" => $freeSeats,
             "takenSeats" => $takenSeats,
             "moneyRaised" => $priceAll,
-            "availableStands" =>$availableStands->count
+            "availableStands" =>$availableStands->count,
+            "freeWithRautSeats" =>$freeWithRautSeats,
+            "freeNormalSeats" =>$freeNormalSeats
     ]);
     }
     public static function reservations()
