@@ -130,6 +130,17 @@ class ReservationController extends Controller
 
         $seats = Seat::findMany($seatsData)->toArray();
 
+        if ($this->array_any($seats, function ($seat) {
+            return  $seat['rezervace'] !== null;
+        })) {
+            return response()->json([
+                'error' => 'Some seats already have a reservation!',
+                'full_seats' => array_filter($seats, function ($seat) {
+                    return $seat['rezervace'] != null;
+                })
+            ], 400);
+        }
+
         $totalPrice = $this->getStandPrice($stand) + $this->getSeatsPrice($seats);
 
         $reservation = Reservation::create(
@@ -153,6 +164,16 @@ class ReservationController extends Controller
 
         // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
         return response()->json($data, 200);
+    }
+
+    private function array_any(array $array, callable $fn)
+    {
+        foreach ($array as $value) {
+            if ($fn($value)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function getStandPrice($stand)
