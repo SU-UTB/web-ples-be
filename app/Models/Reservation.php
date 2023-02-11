@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
-    //protected $table = '';
+    protected $table = 'r2023_rezervace';
     protected $fillable = [
         'name',
         'email',

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Content;
 
 use App\Http\Controllers\Controller;
+use App\Models\AvailableStands;
 use App\Models\Contact;
 use App\Models\Content;
 use App\Models\LandingPageContent;
@@ -81,10 +82,12 @@ class ContentLandingController extends Controller
         $takenSeats = count(Seat::where('rezervace', '!=', null)->get());
         $freeSeats = count(Seat::where('rezervace', '=', null)->get());
         $seats = Seat::all();
+        $availableStands = AvailableStands::find(1);
         $response = [
             "freeSeats" => $freeSeats,
             "takenSeats" => $takenSeats,
             "seats" => $seats,
+            "availableStands" =>$availableStands->count
         ];
         return response($response, 200);
     }
