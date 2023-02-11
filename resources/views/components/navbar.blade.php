@@ -1,4 +1,4 @@
-mmenteo@php
+@php
     $aDashboard = '';
     $aReservations = '';
     $aLandingContent = '';
@@ -38,6 +38,17 @@ mmenteo@php
             </li>
  --}}
         </ul>
+        <div class="mx-auto"></div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <form method="POST" action="{{ route('logout') }}" name="logout-form" id="logout-form" >
+                    @csrf
 
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-blue">Logout</button>
+                    </div>
+                </form>
+            </li>
+        </ul>
     </div>
 </nav>
