@@ -11,5 +11,5 @@ use Illuminate\Database\Eloquent\Model;
 class Seat extends Model
 {
     use HasFactory;
-    //protected $table = 'r2020_seats';
+    protected $table = 'r2023_seats';
 }
