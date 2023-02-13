@@ -19,7 +19,8 @@ class AdministrationController extends Controller
         $freeNormalSeats = count(Seat::where('rezervace', '=', null)->where('typ', '=', 'normal')->get());
         $priceAll = array_sum(array_map(function ($r) {
             return $r['price_all'];
-        }, Reservation::all()->toArray()));
+        }, Reservation::all()->toArray())) - 5500;
+        // 5500 free listky
         $availableStands = AvailableStands::find(1);
         return view('dashboard', [
             "freeSeats" => $freeSeats,
@@ -30,9 +31,9 @@ class AdministrationController extends Controller
             "freeNormalSeats" => $freeNormalSeats
         ]);
     }
-    public  function reservations()
+    public  static function reservations()
     {
-        $data = $this->getReservationsData();
+        $data = AdministrationController::getReservationsData();
         return view('administration/reservations', ["reservations" => $data, "search" => ""]);
     }
 
@@ -41,10 +42,10 @@ class AdministrationController extends Controller
         $search = $request->input('search');
 
         if ($search == '') {
-            return $this->reservations();
+            return AdministrationController::reservations();
         } else {
 
-            $data = $this->getReservationsData();
+            $data = AdministrationController::getReservationsData();
 
             $data = array_filter(
                 $data,
@@ -69,7 +70,7 @@ class AdministrationController extends Controller
         return false;
     }
 
-    private function getReservationsData()
+    private static function getReservationsData()
     {
         $seats = Seat::whereNotNull('rezervace')->get()->toArray();
         $reservations = Reservation::all()->toArray();
