@@ -16,7 +16,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-  
+
 
 </head>
 
@@ -26,54 +26,70 @@
     </script>
     <div class="min-h-screen bg-gray-100">
 
-<x-navbar></x-navbar>
+        <x-navbar></x-navbar>
         <!-- Page Content -->
         <main>
 
+            <br>
+            <div class="mx-auto" style="width: 250px;">
+                <form name="search-reservation-form" id="search-reservation-form" method="POST"
+                action="{{route('search-reservations')}}">
+                    @csrf
 
-            <div class="container mt-4">
-
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Jmeno</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Tel</th>
-                            <th scope="col">Poznamka</th>
-                            <th scope="col">Pocet na stani</th>
-                            <th scope="col">Cena celkem</th>
-                            <th scope="col">Datum platby</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($reservations as $reservation)
-                            <tr>
-                                <th scope="row">{{ $reservation['id'] }}</th>
-                                <td>{{ $reservation['name'] }}</td>
-                                <td>{{ $reservation['email'] }}</td>
-                                <td>{{ $reservation['tel'] }}</td>
-                                <td>{{ $reservation['note'] }}</td>
-                                <td>{{ $reservation['stand'] }}</td>
-                                <td>{{ $reservation['price_all'] }}</td>
-                                <td>{{ $reservation['date_payment'] }}</td>
-                                <td>
-                                    <button type="submit" class="btn btn-orange">
-                                        <a href="{{ route('cancelReservation', $reservation['id']) }}">Cancel</a></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td scope="row">Sedadla</td>
-                                <td>@json($reservation['seats'])</td>
-                            </tr>
-                        @endforeach
-
-
-                    </tbody>
-                </table>
+                    <input type="text" class="form-control" id="search" name="search" placeholder="Search by seats..." value="{{$search}}"
+                        onchange="this.form.submit();">
+                </form>
             </div>
+            <br>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Jmeno</th>
+                        <th scope="col">Email</th>
+                        {{-- <th scope="col">Tel</th> --}}
+                        <th scope="col">Poznamka</th>
+                        <th scope="col">Pocet na stani</th>
+                        <th scope="col">Cena celkem</th>
+                        <th scope="col">Datum platby</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($reservations as $reservation)
+                        <tr>
+                            <th scope="row">{{ $reservation['id'] }}</th>
+                            <td>{{ $reservation['name'] }}</td>
+                            <td>{{ $reservation['email'] }}</td>
+                            {{-- <td>{{ $reservation['tel'] }}</td> --}}
+                            <td>{{ $reservation['note'] }}</td>
+                            <td>{{ $reservation['stand'] }}</td>
+                            <td>{{ $reservation['price_all'] }}</td>
+                            <td>{{ $reservation['date_payment'] }}</td>
+                            <td>
+                                <button type="submit" class="btn btn-orange">
+                                    <a href="{{ route('cancelReservation', $reservation['id']) }}">Cancel</a></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td scope="row">Sedadla</td>
+                            <td>
+                                @foreach ($reservation['seats'] as $seat)
+                                    <span>{{ $seat }}</span>
+                                @endforeach
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    @endforeach
+
+
+                </tbody>
+            </table>
 
         </main>
     </div>
@@ -83,3 +99,9 @@
 
 
 </html>
+
+<script>
+    function onSearch(params) {
+        console.log(params);
+    }
+</script>
