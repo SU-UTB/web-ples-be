@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin', [AdministrationController::class, 'dashboard'])->name('dashboard');
     Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
+    Route::post('/admin/reservations/search', [AdministrationController::class, 'reservationsSearch'])->name('search-reservations');
     Route::get('/admin/content/landing', [ContentLandingEditController::class, 'indexLanding'])->name('landingEdit');
     Route::get('/admin/content/landing/contacts', [ContentLandingEditController::class, 'indexContacts'])->name('contactsEdit');
     Route::get('/admin/content/landing/tickets', [ContentLandingEditController::class, 'indexTickets'])->name('ticketsEdit');
