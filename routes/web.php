@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\AdministrationController;
 use App\Http\Controllers\Content\ContentLandingEditController;
+use App\Http\Controllers\MakerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\SalonController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 
-Route::get('/salony', [SalonController::class, 'index']);
+Route::get('/salony', [MakerController::class, 'index']);
 
 Route::middleware('auth')->group(function () {
 
