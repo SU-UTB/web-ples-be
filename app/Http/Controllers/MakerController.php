@@ -48,10 +48,10 @@ class MakerController extends Controller
         }
 
         $data = [
-            'makers' => $makers->toJson(JSON_UNESCAPED_UNICODE),
-            'availableTimes' => json_encode($availableTimes, JSON_UNESCAPED_UNICODE),
-            'makerServices' => $makerServices->toJson(JSON_UNESCAPED_UNICODE),
+            'makers' => $makers->toArray(),
+            'availableTimes' => $availableTimes,
+            'makerServices' => $makerServices->toArray(),
         ];
-        return view('makers', $data);
+        return response()->json($data, 200);
     }
 }
