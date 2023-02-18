@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class MakerTime extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'maker_id',
+        'time'
+    ];
+
 }

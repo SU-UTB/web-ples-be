@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Maker;
+use App\Models\MakerReservation;
 use App\Models\MakerService;
 use App\Models\MakerTime;
+use Illuminate\Http\Request;
 
 
 class MakerController extends Controller
@@ -53,5 +55,55 @@ class MakerController extends Controller
             'makerServices' => $makerServices->toArray(),
         ];
         return response()->json($data, 200);
+    }
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'maker' => 'required',
+            'time' => 'required',
+            'service' => 'required',
+            'name' => 'required',
+            'phone' => 'required',
+            'email' => 'required',
+            'consent' => 'required'
+        ]);
+
+        $makerId = (int)$request->input('maker');
+        $time = (string)$request->input('time');
+
+        $makerTimes = MakerTime::all();
+
+        foreach ($makerTimes as $makerTime) {
+            if ((int)$makerTime->maker_id === $makerId && (string)$makerTime->time === $time) {
+                return response()->json([
+                    "error" => "Time $time for maker $makerId is already reserved",
+                ], 400);
+            }
+        }
+
+        $reservedTime = MakerTime::create([
+            'maker_id' => $makerId,
+            'time' => $time
+        ]);
+
+        $reservation = MakerReservation::create([
+            'maker' => $makerId,
+            'time' => $time,
+            'service' => $request->input('service'),
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'email' => $request->input('email'),
+            'consent' => (int)$request->input('consent')
+
+        ]);
+
+        $data = ['reservation' => $reservation, 'reservedTime' => $reservedTime];
+
+        // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
+
+        return response()->json($data, 200);
+
     }
 }
