@@ -52,7 +52,6 @@ class MakerController extends Controller
             'availableTimes' => json_encode($availableTimes, JSON_UNESCAPED_UNICODE),
             'makerServices' => $makerServices->toJson(JSON_UNESCAPED_UNICODE),
         ];
-        dd($data);
-        return view('salons', $data);
+        return view('makers', $data);
     }
 }
