@@ -24,8 +24,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::get('pages/landing', [ContentLandingController::class, 'index']);
 
 
-Route::get('/salons', [\App\Http\Controllers\MakerController::class, 'index']);
-Route::post('/salons', [\App\Http\Controllers\MakerController::class, 'store']);
+Route::get('/makers', [\App\Http\Controllers\MakerController::class, 'index']);
+Route::post('/makers', [\App\Http\Controllers\MakerController::class, 'store']);
 
 
 // Protected routes
