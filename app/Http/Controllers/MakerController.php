@@ -101,7 +101,7 @@ class MakerController extends Controller
 
         $data = ['reservation' => $reservation, 'reservedTime' => $reservedTime];
 
-        // EmailSendingController::sendEmail(EmailContent::Cancel, $data);
+        EmailSendingController::sendEmail(EmailContent::ReserveMaker, $data);
 
         return response()->json($data, 200);
 

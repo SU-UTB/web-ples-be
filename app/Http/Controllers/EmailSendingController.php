@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Illuminate\Http\Request;
-
-use SendinBlue\Client\Configuration;
-use SendinBlue\Client\Api\TransactionalEmailsApi;
 use GuzzleHttp;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Configuration;
 
 
 class EmailSendingController extends Controller
@@ -49,7 +47,6 @@ class EmailSendingController extends Controller
 
         try {
             $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-            print_r($result);
         } catch (Exception $e) {
             echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
         }
@@ -65,6 +62,12 @@ class EmailSendingController extends Controller
                 $prepareContent = str_replace("{{table}}", "x", $prepareContent);
                 $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
                 return $prepareContent;
+            case EmailContent::ReserveMaker:
+                $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/MakerReservationTemplate.htm');
+                $prepareContent = str_replace("{{maker}}", $data['reservation']->maker, $prepareContent);
+                $prepareContent = str_replace("{{time}}", $data['reservation']->time, $prepareContent);
+                $prepareContent = str_replace("{{service}}", $data['reservation']->service, $prepareContent);
+                return $prepareContent;
             case EmailContent::Cancel:
                 return file_get_contents(dirname(__DIR__, 2) . '/View/Email/CancelTemplate.htm');
         }
@@ -72,6 +75,7 @@ class EmailSendingController extends Controller
     private static function getEmailSubject(EmailContent $type)
     {
         switch ($type) {
+            case EmailContent::ReserveMaker:
             case EmailContent::Reserve:
                 return 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
             case EmailContent::Cancel:
@@ -84,4 +88,5 @@ enum EmailContent
 {
     case Reserve;
     case Cancel;
+    case ReserveMaker;
 }
