@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\AvailableStands;
+use App\Models\Maker;
+use App\Models\MakerReservation;
 use App\Models\Reservation;
 use App\Models\Seat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 
 class AdministrationController extends Controller
 {
@@ -18,8 +19,8 @@ class AdministrationController extends Controller
         $freeWithRautSeats = count(Seat::where('rezervace', '=', null)->where('typ', '=', 'raut')->get());
         $freeNormalSeats = count(Seat::where('rezervace', '=', null)->where('typ', '=', 'normal')->get());
         $priceAll = array_sum(array_map(function ($r) {
-            return $r['price_all'];
-        }, Reservation::all()->toArray())) - 5500;
+                return $r['price_all'];
+            }, Reservation::all()->toArray())) - 5500;
         // 5500 free listky
         $availableStands = AvailableStands::find(1);
         return view('dashboard', [
@@ -31,13 +32,20 @@ class AdministrationController extends Controller
             "freeNormalSeats" => $freeNormalSeats
         ]);
     }
-    public  static function reservations()
+
+    public static function reservations()
     {
         $data = AdministrationController::getReservationsData();
         return view('administration/reservations', ["reservations" => $data, "search" => ""]);
     }
 
-    public  function reservationsSearch(Request $request)
+    public static function makers()
+    {
+        $data = AdministrationController::getMakersReservationsData();
+        return view('administration/makers', ["reservations" => $data, "search" => ""]);
+    }
+
+    public function reservationsSearch(Request $request)
     {
         $search = $request->input('search');
 
@@ -50,12 +58,32 @@ class AdministrationController extends Controller
             $data = array_filter(
                 $data,
                 function ($var) use ($search) {
-                    return AdministrationController::array_any($var['seats'], function ($alias)  use ($search) {
+                    return AdministrationController::array_any($var['seats'], function ($alias) use ($search) {
                         return str_contains(strtolower($alias), strtolower($search));
                     });
                 }
             );
             return view('administration/reservations', ["reservations" => $data, "search" => $search]);
+        }
+    }
+
+    public function makersSearch(Request $request)
+    {
+        $search = $request->input('search');
+
+        if ($search == '') {
+            return AdministrationController::makers();
+        } else {
+
+            $data = AdministrationController::getMakersReservationsData();
+
+            $data = array_filter(
+                $data,
+                function ($var) use ($search) {
+                    return str_contains(strtolower($var['name']), strtolower($search));
+                }
+            );
+            return view('administration/makers', ["reservations" => $data, "search" => $search]);
         }
     }
 
@@ -89,5 +117,21 @@ class AdministrationController extends Controller
             array_push($data, $reservation);
         }
         return $data;
+    }
+
+    private static function getMakersReservationsData()
+    {
+        $makers = Maker::all();
+        $reservations = MakerReservation::all()->toArray();
+
+        $data = [];
+        foreach ($reservations as $reservation) {
+            $maker = $makers->where('id', $reservation['maker'])->first();
+            $reservation['maker'] = $maker->name;
+
+            array_push($data, $reservation);
+        }
+        return $data;
+
     }
 }

@@ -106,4 +106,33 @@ class MakerController extends Controller
         return response()->json($data, 200);
 
     }
+
+    public function cancel(Request $request, $id)
+    {
+        $reservation = MakerReservation::find($id);
+
+        $makerTime = MakerTime::where([
+            ['maker_id', '=', $reservation->maker],
+            ['time', '=', $reservation->time],
+
+        ])->get()->first();
+
+
+        MakerTime::destroy($makerTime->id);
+        $this->destroy($id);
+        return AdministrationController::makers();
+    }
+
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        return MakerReservation::destroy($id);
+    }
+
 }
