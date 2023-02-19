@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Maker;
 use Exception;
 use GuzzleHttp;
 use SendinBlue\Client\Api\TransactionalEmailsApi;
@@ -16,8 +17,8 @@ class EmailSendingController extends Controller
         $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', env('SENDINBLUE_API_KEY'));
 
         $apiInstance = new TransactionalEmailsApi(
-            // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-            // This is optional, `GuzzleHttp\Client` will be used as default.
+        // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+        // This is optional, `GuzzleHttp\Client` will be used as default.
             new GuzzleHttp\Client(),
             $config
         );
@@ -63,8 +64,9 @@ class EmailSendingController extends Controller
                 $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
                 return $prepareContent;
             case EmailContent::ReserveMaker:
+                $makerName = Maker::find($data['reservation']->maker)->name;
                 $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/MakerReservationTemplate.htm');
-                $prepareContent = str_replace("{{maker}}", $data['reservation']->maker, $prepareContent);
+                $prepareContent = str_replace("{{maker}}", $makerName, $prepareContent);
                 $prepareContent = str_replace("{{time}}", $data['reservation']->time, $prepareContent);
                 $prepareContent = str_replace("{{service}}", $data['reservation']->service, $prepareContent);
                 return $prepareContent;
@@ -72,6 +74,7 @@ class EmailSendingController extends Controller
                 return file_get_contents(dirname(__DIR__, 2) . '/View/Email/CancelTemplate.htm');
         }
     }
+
     private static function getEmailSubject(EmailContent $type)
     {
         switch ($type) {
