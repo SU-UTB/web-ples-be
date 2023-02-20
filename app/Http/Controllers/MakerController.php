@@ -78,6 +78,8 @@ class MakerController extends Controller
         foreach ($makerTimes as $makerTime) {
             if ((int)$makerTime->maker_id === $makerId && (string)$makerTime->time === $time) {
                 $maker = Maker::find($makerId)->name;
+                $time = str_replace('00', ':00', $time);
+                $time = str_replace('30', ':30', $time);
                 return response()->json([
                     "error" => "Rezervace u vizážistky \"$maker\" na $time je již bohužel vytvořena, prosím zvolte jiný čas.",
                 ], 400);

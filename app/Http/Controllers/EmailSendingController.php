@@ -65,9 +65,12 @@ class EmailSendingController extends Controller
                 return $prepareContent;
             case EmailContent::ReserveMaker:
                 $makerName = Maker::find($data['reservation']->maker)->name;
+                $time = $data['reservation']->time;
+                $time = str_replace('00', ':00', $time);
+                $time = str_replace('30', ':30', $time);
                 $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/MakerReservationTemplate.htm');
                 $prepareContent = str_replace("{{maker}}", $makerName, $prepareContent);
-                $prepareContent = str_replace("{{time}}", $data['reservation']->time, $prepareContent);
+                $prepareContent = str_replace("{{time}}", $time, $prepareContent);
                 $prepareContent = str_replace("{{service}}", $data['reservation']->service, $prepareContent);
                 return $prepareContent;
             case EmailContent::Cancel:

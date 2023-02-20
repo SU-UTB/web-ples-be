@@ -128,6 +128,10 @@ class AdministrationController extends Controller
         foreach ($reservations as $reservation) {
             $maker = $makers->where('id', $reservation['maker'])->first();
             $reservation['maker'] = $maker->name;
+            $time = $reservation['time'];
+            $time = str_replace('00', ':00', $time);
+            $time = str_replace('30', ':30', $time);
+            $reservation['time'] = $time;
 
             array_push($data, $reservation);
         }
