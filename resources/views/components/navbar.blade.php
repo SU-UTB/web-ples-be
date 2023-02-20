@@ -4,10 +4,13 @@
     $aLandingContent = '';
     $aLandingContacts = '';
     $aLandingTickets = '';
+    $aMakers = '';
     if (request()->routeIs('dashboard')) {
         $aDashboard = 'active';
     } elseif (request()->routeIs('reservations')) {
         $aReservations = 'active';
+    }elseif (request()->routeIs('makers')) {
+        $aMakers = 'active';
     } elseif (request()->routeIs('landingEdit')) {
         $aLandingContent = 'active';
     } elseif (request()->routeIs('contactsEdit')) {
@@ -26,6 +29,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link {{ $aReservations }}" href="/admin/reservations">Reservations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ $aMakers }}" href="/admin/makers">Makers</a>
             </li>
             {{--        <li class="nav-item">
                 <a class="nav-link {{ $aLandingContent }}" href="/admin/content/landing">Landing/Content</a>

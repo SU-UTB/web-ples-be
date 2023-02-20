@@ -1,16 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ContentController;
 use App\Http\Controllers\Content\ContentLandingController;
 use App\Http\Controllers\Content\ContentReservationsController;
-use App\Http\Controllers\EmailSendingController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\ReservationController;
-use App\Http\Controllers\SeatController;
-use App\Models\Reservation;
-use App\Models\Seat;
-use Faker\Core\DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +22,10 @@ use Illuminate\Support\Facades\Route;
 //Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('pages/landing', [ContentLandingController::class, 'index']);
+
+
+Route::get('/makers', [\App\Http\Controllers\MakerController::class, 'index']);
+Route::post('/makers', [\App\Http\Controllers\MakerController::class, 'store']);
 
 
 // Protected routes
