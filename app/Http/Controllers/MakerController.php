@@ -71,6 +71,13 @@ class MakerController extends Controller
         ]);
 
         $makerId = (int)$request->input('maker');
+
+        if ($makerId === 0) {
+            return response()->json([
+                "error" => "Omlouváme se, nastala chyba a rezervace se bohužel nezdařila, zvolte prosím jinou obsluhu.",
+            ], 400);
+        }
+
         $time = (string)$request->input('time');
 
         $makerTimes = MakerTime::all();
