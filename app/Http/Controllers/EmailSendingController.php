@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Maker;
 use Exception;
-use Illuminate\Http\Request;
-
-use SendinBlue\Client\Configuration;
-use SendinBlue\Client\Api\TransactionalEmailsApi;
 use GuzzleHttp;
+use SendinBlue\Client\Api\TransactionalEmailsApi;
+use SendinBlue\Client\Configuration;
 
 
 class EmailSendingController extends Controller
@@ -18,8 +17,8 @@ class EmailSendingController extends Controller
         $config = Configuration::getDefaultConfiguration()->setApiKey('api-key', env('SENDINBLUE_API_KEY'));
 
         $apiInstance = new TransactionalEmailsApi(
-            // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
-            // This is optional, `GuzzleHttp\Client` will be used as default.
+        // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+        // This is optional, `GuzzleHttp\Client` will be used as default.
             new GuzzleHttp\Client(),
             $config
         );
@@ -49,7 +48,6 @@ class EmailSendingController extends Controller
 
         try {
             $result = $apiInstance->sendTransacEmail($sendSmtpEmail);
-            print_r($result);
         } catch (Exception $e) {
             echo 'Exception when calling TransactionalEmailsApi->sendTransacEmail: ', $e->getMessage(), PHP_EOL;
         }
@@ -65,13 +63,25 @@ class EmailSendingController extends Controller
                 $prepareContent = str_replace("{{table}}", "x", $prepareContent);
                 $prepareContent = str_replace("{{endDate}}", $data['reservation']->created_at->addWeekDays(3)->format('d.m H:i'), $prepareContent);
                 return $prepareContent;
+            case EmailContent::ReserveMaker:
+                $makerName = Maker::find($data['reservation']->maker)->name;
+                $time = $data['reservation']->time;
+                $time = str_replace('00', ':00', $time);
+                $time = str_replace('30', ':30', $time);
+                $prepareContent = file_get_contents(dirname(__DIR__, 2) . '/View/Email/MakerReservationTemplate.htm');
+                $prepareContent = str_replace("{{maker}}", $makerName, $prepareContent);
+                $prepareContent = str_replace("{{time}}", $time, $prepareContent);
+                $prepareContent = str_replace("{{service}}", $data['reservation']->service, $prepareContent);
+                return $prepareContent;
             case EmailContent::Cancel:
                 return file_get_contents(dirname(__DIR__, 2) . '/View/Email/CancelTemplate.htm');
         }
     }
+
     private static function getEmailSubject(EmailContent $type)
     {
         switch ($type) {
+            case EmailContent::ReserveMaker:
             case EmailContent::Reserve:
                 return 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
             case EmailContent::Cancel:
@@ -84,4 +94,5 @@ enum EmailContent
 {
     case Reserve;
     case Cancel;
+    case ReserveMaker;
 }
