@@ -9,6 +9,8 @@ use App\Models\Reservation;
 use App\Models\Seat;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Log;
 
 class AdministrationController extends Controller
 {
@@ -36,7 +38,8 @@ class AdministrationController extends Controller
     public static function reservations()
     {
         $data = AdministrationController::getReservationsData();
-        return view('administration/reservations', ["reservations" => $data, "search" => ""]);
+        return Inertia::render('Admin/Reservations', ['reservations' => $data, 'search' => ""]);
+
     }
 
     public static function makers()
@@ -45,28 +48,12 @@ class AdministrationController extends Controller
         return view('administration/makers', ["reservations" => $data, "search" => ""]);
     }
 
-    public function reservationsSearch(Request $request)
+    public function reservationsSearch()
     {
-        $search = $request->input('search');
-
-        if ($search == '') {
-            return AdministrationController::reservations();
-        } else {
-
-            $data = AdministrationController::getReservationsData();
-
-            $data = array_filter(
-                $data,
-                function ($var) use ($search) {
-                    return AdministrationController::array_any($var['seats'], function ($alias) use ($search) {
-                        return str_contains(strtolower($alias), strtolower($search));
-                    });
-                }
-            );
-            return view('administration/reservations', ["reservations" => $data, "search" => $search]);
-        }
+        $data = AdministrationController::getReservationsData();
+        return Inertia::render('Admin/Reservations', ['reservations' => $data, 'search' => ""]);
     }
-
+    
     public function makersSearch(Request $request)
     {
         $search = $request->input('search');
@@ -100,6 +87,7 @@ class AdministrationController extends Controller
 
     private static function getReservationsData()
     {
+      
         $seats = Seat::whereNotNull('rezervace')->get()->toArray();
         $reservations = Reservation::all()->toArray();
         $data = [];

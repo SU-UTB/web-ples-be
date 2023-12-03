@@ -27,15 +27,8 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/admin', [AdministrationController::class, 'dashboard'])->name('dashboard');
-    Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
-    Route::get('/admin/makers', [AdministrationController::class, 'makers'])->name('maker');
-    Route::post('/admin/reservations/search', [AdministrationController::class, 'reservationsSearch'])->name('search-reservations');
     Route::post('/admin/makers/search', [AdministrationController::class, 'makersSearch'])->name('search-makers');
     Route::get('/admin/content/landing', [ContentLandingEditController::class, 'indexLanding'])->name('landingEdit');
     Route::get('/admin/content/landing/contacts', [ContentLandingEditController::class, 'indexContacts'])->name('contactsEdit');
@@ -44,10 +37,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/admin/content/landing/contacts/{id}', [ContentLandingEditController::class, 'updateContact'])->name('updateContact');
     Route::post('/admin/content/landing/tickets', [ContentLandingEditController::class, 'updateTicketsDate'])->name('updateTicketsDate');
 
+    Route::get('/admin/makers/{id}', [\App\Http\Controllers\MakerController::class, 'cancel'])->name('cancelMakerReservation');
+
     Route::get('test/reservation' , [ReservationController::class, 'reservationTest'])->name('reservationTest');
+    Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
+    Route::get('/admin/makers', [AdministrationController::class, 'makers'])->name('maker');
+    Route::post('/admin/reservations/search', [AdministrationController::class, 'reservationsSearch'])->name('search-reservations');
     Route::post('/admin/reservations', [ReservationController::class, 'store']);
     Route::get('/admin/reservations/{id}', [ReservationController::class, 'cancel'])->name('cancelReservation');
-    Route::get('/admin/makers/{id}', [\App\Http\Controllers\MakerController::class, 'cancel'])->name('cancelMakerReservation');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

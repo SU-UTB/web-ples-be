@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 /**
  * @OA\Info(
@@ -299,6 +300,6 @@ class ReservationController extends Controller
     public function reservationTest()
     {
         $seats = Seat::all()->toArray();
-        return view('reservation', ["seats" => $seats]);
+        return Inertia::render('Admin/Reservations', ['reservations' => $data, 'search' => ""]);
     }
 }
