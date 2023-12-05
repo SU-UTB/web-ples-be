@@ -42,7 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::get('test/reservation' , [ReservationController::class, 'reservationTest'])->name('reservationTest');
     Route::get('/admin/reservations', [AdministrationController::class, 'reservations'])->name('reservations');
     Route::get('/admin/makers', [AdministrationController::class, 'makers'])->name('maker');
-    Route::post('/admin/reservations/search', [AdministrationController::class, 'reservationsSearch'])->name('search-reservations');
+
+    Route::post('/admin/reservations/search/', [AdministrationController::class, 'reservationsSearch'])->name('search-reservations');
+    Route::get('/admin/reservations/search/', [AdministrationController::class, 'reservations'])->name('get-search-reservations');
+
+
     Route::post('/admin/reservations', [ReservationController::class, 'store']);
     Route::get('/admin/reservations/{id}', [ReservationController::class, 'cancel'])->name('cancelReservation');
 

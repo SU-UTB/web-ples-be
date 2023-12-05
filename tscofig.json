@@ -12,7 +12,9 @@
         "noEmit": true,
         "noImplicitAny": false,
         "paths": {
-            "@/*": ["./resources/js/*"]
+            "@/*": [
+                "./resources/js/*"
+            ]
         }
     },
     "include": [

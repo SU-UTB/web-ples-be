@@ -1,103 +1,69 @@
-import React, { useState } from "react";
-import { Inertia } from "@inertiajs/inertia";
-import "bootstrap/dist/css/bootstrap.min.css";
-import NavBar from "@/Components/Navbar";
+import React, {FormEvent, useState} from "react";
+import {router} from "@inertiajs/react";
+import {Button, Navbar, Pagination, TextInput} from 'flowbite-react';
+import ReservationsTable from "../../Components/Tables/ReservationsTable";
 
-const Reservations = ({ reservations, search }) => {
-    const [searchTerm, setSearchTerm] = useState(search);
 
-    const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value);
-    };
+export default function Reservations({paginationReservations, search}: any) {
+    const [searchInput, setSearchInput] = useState<string>(search);
 
-    const handleSearchSubmit = (e) => {
+    function submitSearch(e: FormEvent) {
         e.preventDefault();
-        Inertia.post(route("search-reservations"), { search: searchTerm });
-    };
+        router.post("/admin/reservations/search", { search: searchInput });
+    }
+
+    function onCancelReservation(id: number) {
+        router.delete(`/admin/reservations/${id}`);
+    }
+
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <NavBar />
+        //TODO solution will be after you fix whole layout
+        <div className="min-h-screen bg-gray-100" key={paginationReservations.data.length.toString()}>
+            <Navbar/>
+
+
             <main>
-                <br />
-                <div className="mx-auto" style={{ width: "250px" }}>
+
+
+                <br/>
+                <div className="mx-auto flex justify-center items-center px-4">
                     <form
+                        className="flex max-w-md flex-row gap-4"
                         name="search-reservation-form"
                         id="search-reservation-form"
-                        onSubmit={handleSearchSubmit}
+                        method="POST"
+                        onSubmit={submitSearch}
                     >
-                        <input
+                        <TextInput
                             type="text"
-                            className="form-control"
                             id="search"
                             name="search"
-                            placeholder="Search by seats..."
-                            value={searchTerm}
-                            onChange={handleSearchChange}
+                            placeholder="Search..."
+                            value={searchInput}
+                            onChange={(val) => setSearchInput(val.target.value)}
                         />
+                        <Button type="submit">Search</Button>
                     </form>
                 </div>
-                <br />
-                <table className="table table-striped">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Jmeno</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Poznamka</th>
-                            <th scope="col">Pocet na stani</th>
-                            <th scope="col">Cena celkem</th>
-                            <th scope="col">Datum platby</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reservations.map((reservation, index) => (
-                            <React.Fragment key={index}>
-                                <tr>
-                                    <th scope="row">{reservation.id}</th>
-                                    <td>{reservation.name}</td>
-                                    <td>{reservation.email}</td>
-                                    <td>{reservation.note}</td>
-                                    <td>{reservation.stand}</td>
-                                    <td>{reservation.price_all}</td>
-                                    <td>{reservation.date_payment}</td>
-                                    <td>
-                                        <button className="btn btn-orange">
-                                            <a
-                                                href={route(
-                                                    "cancelReservation",
-                                                    reservation.id
-                                                )}
-                                            >
-                                                Cancel
-                                            </a>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td scope="row">Sedadla</td>
-                                    <td>
-                                        {Object.values(reservation.seats).map(
-                                            (seat) => (
-                                                <span key={seat}>{seat}</span>
-                                            )
-                                        )}
-                                    </td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </React.Fragment>
-                        ))}
-                    </tbody>
-                </table>
+
+                <br/>
+                <ReservationsTable
+                    reservations={paginationReservations.data}
+                    onCancelReservation={onCancelReservation}
+                />
+                <br/>
+                <div className="mx-auto flex justify-center items-center px-4">
+                    <Pagination
+                        currentPage={paginationReservations.current_page}
+                        onPageChange={(page) => {
+                            router.visit(paginationReservations.path + "?page=" + page);
+                        }}
+                        totalPages={paginationReservations.last_page}
+                    />
+                </div>
+
             </main>
         </div>
     );
-};
-
-export default Reservations;
+}
