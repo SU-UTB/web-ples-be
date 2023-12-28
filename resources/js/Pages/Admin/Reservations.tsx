@@ -1,10 +1,9 @@
-import React, {FormEvent, useState} from "react";
-import {router} from "@inertiajs/react";
-import {Button, Navbar, Pagination, TextInput} from 'flowbite-react';
+import React, { FormEvent, useState } from "react";
+import { router } from "@inertiajs/react";
+import { Button, Navbar, Pagination, TextInput } from "flowbite-react";
 import ReservationsTable from "../../Components/Tables/ReservationsTable";
 
-
-export default function Reservations({paginationReservations, search}: any) {
+export default function Reservations({ paginationReservations, search }: any) {
     const [searchInput, setSearchInput] = useState<string>(search);
 
     function submitSearch(e: FormEvent) {
@@ -13,20 +12,19 @@ export default function Reservations({paginationReservations, search}: any) {
     }
 
     function onCancelReservation(id: number) {
-        router.delete(`/admin/reservations/${id}`);
+        router.get(`/admin/reservations/${id}`);
     }
-
 
     return (
         //TODO solution will be after you fix whole layout
-        <div className="min-h-screen bg-gray-100" key={paginationReservations.data.length.toString()}>
-            <Navbar/>
-
+        <div
+            className="min-h-screen bg-gray-100"
+            key={paginationReservations.data.length.toString()}
+        >
+            <Navbar />
 
             <main>
-
-
-                <br/>
+                <br />
                 <div className="mx-auto flex justify-center items-center px-4">
                     <form
                         className="flex max-w-md flex-row gap-4"
@@ -47,22 +45,23 @@ export default function Reservations({paginationReservations, search}: any) {
                     </form>
                 </div>
 
-                <br/>
+                <br />
                 <ReservationsTable
                     reservations={paginationReservations.data}
                     onCancelReservation={onCancelReservation}
                 />
-                <br/>
+                <br />
                 <div className="mx-auto flex justify-center items-center px-4">
                     <Pagination
                         currentPage={paginationReservations.current_page}
                         onPageChange={(page) => {
-                            router.visit(paginationReservations.path + "?page=" + page);
+                            router.visit(
+                                paginationReservations.path + "?page=" + page
+                            );
                         }}
                         totalPages={paginationReservations.last_page}
                     />
                 </div>
-
             </main>
         </div>
     );

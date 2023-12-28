@@ -1,13 +1,8 @@
-import {Button, Table, Textarea, TextInput} from "flowbite-react";
+import { Button, Table } from "flowbite-react";
 
-import {IconContext} from "react-icons";
-import {FaEye, FaEyeSlash} from "react-icons/fa6";
 import React from "react";
 
-const ReservationsTable = ({
-                               reservations,
-                               onCancelReservation,
-                           }: any) => {
+const ReservationsTable = ({ reservations, onCancelReservation }: any) => {
     //TODO types
     return (
         <Table>
@@ -33,45 +28,32 @@ const ReservationsTable = ({
                             <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                                 {reservation.id}
                             </Table.Cell>
-                            <Table.Cell>
-                                {reservation.name}
-                            </Table.Cell>
-                            <Table.Cell>
-
-                                {reservation.email}
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reservation.note}</Table.Cell>
+                            <Table.Cell>{reservation.name}</Table.Cell>
+                            <Table.Cell>{reservation.email}</Table.Cell>
+                            <Table.Cell>{reservation.note}</Table.Cell>
                             <Table.Cell>{reservation.stand}</Table.Cell>
+                            <Table.Cell>{reservation.price_all}</Table.Cell>
+                            <Table.Cell>{reservation.date_payment}</Table.Cell>
                             <Table.Cell>
-
-                                {reservation.price_all}
-                            </Table.Cell>
-                            <Table.Cell>
-
-                                {reservation.date_payment}
-                            </Table.Cell>
-                            <Table.Cell>
-
                                 <Button
                                     size={"xs"}
                                     color="failure"
-                                    onClick={() => onCancelReservation(reservation.id)}
+                                    onClick={() =>
+                                        onCancelReservation(reservation.id)
+                                    }
                                 >
                                     <p>Cancel</p>
                                 </Button>
                             </Table.Cell>
                         </Table.Row>
 
-                        <Table.Row key={'seats' + index.toString()}>
+                        <Table.Row key={"seats" + index.toString()}>
                             <Table.Cell></Table.Cell>
                             <Table.Cell scope="row">Sedadla</Table.Cell>
                             <Table.Cell>
-                                {reservation.seats.map(
-                                    (seat) => (
-                                        <span key={seat.alias}>{seat.alias}</span>
-                                    )
-                                )}
+                                {reservation.seats.map((seat) => (
+                                    <span key={seat.alias}>{seat.alias}</span>
+                                ))}
                             </Table.Cell>
                             <Table.Cell></Table.Cell>
                             <Table.Cell></Table.Cell>
@@ -80,7 +62,6 @@ const ReservationsTable = ({
                             <Table.Cell></Table.Cell>
                         </Table.Row>
                     </>
-
                 ))}
             </Table.Body>
         </Table>
