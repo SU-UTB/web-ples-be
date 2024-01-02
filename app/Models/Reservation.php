@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @OA\Schema(schema="Reservation")
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 class Reservation extends Model
 {
     use HasFactory;
+
     protected $table = 'r2023_rezervace';
     protected $fillable = [
         'name',
@@ -35,4 +37,10 @@ class Reservation extends Model
      * @var Collection
      */
     public Collection $seats;
+
+
+    public function seats(): HasMany
+    {
+        return $this->hasMany(Seat::class,'rezervace');
+    }
 }
