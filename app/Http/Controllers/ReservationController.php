@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 /**
  * @OA\Info(
@@ -75,19 +76,19 @@ class ReservationController extends Controller
      *                 @OA\Property(
      *                     property="email",
      *                     type="string"
-     *                 ),     
+     *                 ),
      *                @OA\Property(
      *                     property="tel",
      *                     type="integer"
-     *                 ),                 
+     *                 ),
      *                   @OA\Property(
      *                     property="note",
      *                     type="string"
-     *                 ),    
+     *                 ),
      *                               @OA\Property(
      *                     property="stand",
      *                     type="integer"
-     *                 ),         
+     *                 ),
      *                     @OA\Property(
      *                     property="seats",
      *                     type="integer"
@@ -128,7 +129,7 @@ class ReservationController extends Controller
         }
 
         $availableStands = AvailableStands::find(1);
-       
+
         if ((int)($request->input('stand') ?? 0) > $availableStands->count) {
             return response()->json([
                 'error' => 'Count of stands is higher than available count!',
@@ -228,7 +229,7 @@ class ReservationController extends Controller
         }
         $availableStands = AvailableStands::find(1);
         $availableStands->update([
-            'count' =>  $availableStands->count + Reservation::find($id)->stand,
+            'count' =>  $availableStands->count + (Reservation::find($id)?->stand ?? 0),
         ]);
         $availableStands->save();
         $this->destroy($id);
@@ -299,6 +300,6 @@ class ReservationController extends Controller
     public function reservationTest()
     {
         $seats = Seat::all()->toArray();
-        return view('reservation', ["seats" => $seats]);
+        return Inertia::render('Admin/Reservations', ['reservations' => $data, 'search' => ""]);
     }
 }
