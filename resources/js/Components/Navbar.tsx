@@ -1,82 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "@inertiajs/react";
-const Navbar = () => {
-    const [activeLink, setActiveLink] = useState("");
+import {Avatar, Dropdown, Navbar as FbNavbar} from 'flowbite-react';
+import React from "react";
+import {Link, router} from "@inertiajs/react";
 
-    useEffect(() => {
-        // Update the active link based on the current URL
-        const path = window.location.pathname;
-        if (path.includes("dashboard")) {
-            setActiveLink("dashboard");
-        } else if (path.includes("reservations")) {
-            setActiveLink("reservations");
-        } else if (path.includes("makers")) {
-            setActiveLink("makers");
-        } else {
-            setActiveLink("");
-        }
-    }, []);
+interface INavbar {
+    title: string,
+    auth: any
+}
 
+export const Navbar = ({title, auth}: INavbar) => {
+    console.log(auth);
     return (
-        <nav className="navbar navbar-expand-lg navbar-light">
-            <div className=" navbar-collapse" id="navbarSupportedContent">
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item active">
-                        <a
-                            className={`nav-link ${
-                                activeLink === "dashboard" ? "active" : ""
-                            }`}
-                            href="/admin"
-                        >
-                            Dashboard
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a
-                            className={`nav-link ${
-                                activeLink === "reservations" ? "active" : ""
-                            }`}
-                            href="/admin/reservations"
-                        >
-                            Reservations
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a
-                            className={`nav-link ${
-                                activeLink === "makers" ? "active" : ""
-                            }`}
-                            href="/admin/makers"
-                        >
-                            Makers
-                        </a>
-                    </li>
-                </ul>
-                <div className="mx-auto"></div>
-                <ul className="navbar-nav mr-auto">
-                    <li className="nav-item">
-                        <form
-                            method="POST"
-                            action="/logout"
-                            name="logout-form"
-                            id="logout-form"
-                        >
-                            <div className="form-group">
-                                <Link
-                                    href={route("logout")}
-                                    method="post"
-                                    as="button"
-                                    className="btn btn-blue"
-                                >
-                                    Logout
-                                </Link>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    );
-};
+        <FbNavbar fluid rounded className={'bg-[#f8f9fa]'}>
+            <FbNavbar.Brand href="/admin">
+                <span
+                    className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">{title}</span>
+            </FbNavbar.Brand>
+            <div className="flex md:order-2">
+                <Dropdown
+                    arrowIcon={false}
+                    inline
+                    label={
+                        <Avatar alt="User settings" img="/images/user.png"
+                                rounded/>
+                    }
+                >
+                    <Dropdown.Header>
+                        <span className="block text-sm">{auth.user.name}</span>
+                        <span className="block truncate text-sm font-medium">{auth.user.email}</span>
+                    </Dropdown.Header>
 
-export default Navbar;
+                    <Dropdown.Item onClick={() => router.visit('logout',
+                        {method: 'post'})}>
+                        Sign out
+                    </Dropdown.Item>
+                </Dropdown>
+                <FbNavbar.Toggle/>
+            </div>
+
+        </FbNavbar>
+    );
+}
