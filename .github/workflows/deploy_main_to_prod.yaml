@@ -20,7 +20,7 @@ jobs:
         with:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          host: ${{ secrets.FTP }}
+          server: ${{ secrets.FTP }}
           port: ${{ secrets.FTP_PORT }}
           local_path: './*'
           remote_path: '/www/backend'
