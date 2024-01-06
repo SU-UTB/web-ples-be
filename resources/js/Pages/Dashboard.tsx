@@ -1,21 +1,45 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import {Head} from '@inertiajs/react';
+import React from "react";
+import AuthenticatedLayout from "../Layouts/AuthenticatedLayout";
+import {Card} from "../Components/Card";
 
-export default function Dashboard(props) {
+export default function Dashboard({
+                                      freeSeats,
+                                      takenSeats,
+                                      freeWithRautSeats,
+                                      freeNormalSeats,
+                                      availableStands,
+                                      totalStands,
+                                      moneyRaised,
+                                      auth
+                                  }: any) {
     return (
         <AuthenticatedLayout
-            auth={props.auth}
-            errors={props.errors}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            auth={auth}
+            header={'Dashboard'}
         >
-            <Head title="Dashboard" />
+            <Head title="Dashboard"/>
 
-            <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">You're logged in!</div>
-                    </div>
-                </div>
+            <div className="mx-auto px-4 grid grid-cols-4 gap-4">
+                <Card title1={'Volná místa celkem:'}
+                      data1={freeSeats.toString()}
+                      title2={'Zabraná místa celkem:'}
+                      data2={takenSeats.toString()}/>
+
+                <Card title1={'Volná s rautem:'}
+                      data1={freeWithRautSeats.toString()}
+                      title2={'Volná bez rautu:'}
+                      data2={freeNormalSeats.toString()}/>
+
+                <Card title1={'Volná na stání:'}
+                      data1={availableStands.toString()}
+                      title2={'Prodáno na stání:'}
+                      data2={(totalStands - availableStands).toString()}/>
+
+                <Card title1={'Zisk:'}
+                      data1={moneyRaised.toString() + ' Kč'}
+                      title2={null}
+                      data2={null}/>
             </div>
         </AuthenticatedLayout>
     );

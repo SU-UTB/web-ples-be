@@ -25,13 +25,14 @@ class AdministrationController extends Controller
             }, Reservation::all()->toArray())) - 5500;
         // 5500 free listky
         $availableStands = AvailableStands::find(1);
-        return view('dashboard', [
+        return Inertia::render('Dashboard', [
             "freeSeats" => $freeSeats,
             "takenSeats" => $takenSeats,
             "moneyRaised" => $priceAll,
             "availableStands" => $availableStands->count,
             "freeWithRautSeats" => $freeWithRautSeats,
-            "freeNormalSeats" => $freeNormalSeats
+            "freeNormalSeats" => $freeNormalSeats,
+            "totalStands" => env('AVAILABLE_STANDS')
         ]);
     }
 
