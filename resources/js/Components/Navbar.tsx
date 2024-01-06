@@ -1,11 +1,13 @@
 import {Avatar, Dropdown, Navbar as FbNavbar} from 'flowbite-react';
 import React from "react";
+import {Link, router} from "@inertiajs/react";
 
 interface INavbar {
     title: string,
     auth: any
 }
-export const Navbar = ({title, auth} : INavbar) => {
+
+export const Navbar = ({title, auth}: INavbar) => {
     console.log(auth);
     return (
         <FbNavbar fluid rounded className={'bg-[#f8f9fa]'}>
@@ -27,7 +29,10 @@ export const Navbar = ({title, auth} : INavbar) => {
                         <span className="block truncate text-sm font-medium">{auth.user.email}</span>
                     </Dropdown.Header>
 
-                    <Dropdown.Item>Sign out</Dropdown.Item>
+                    <Dropdown.Item onClick={() => router.visit('logout',
+                        {method: 'post'})}>
+                        Sign out
+                    </Dropdown.Item>
                 </Dropdown>
                 <FbNavbar.Toggle/>
             </div>
