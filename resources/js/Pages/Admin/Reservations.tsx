@@ -5,7 +5,7 @@ import ReservationsTable from "../../Components/Tables/ReservationsTable";
 import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 
 
-export default function Reservations({paginationReservations, search}: any) {
+export default function Reservations({paginationReservations, search, auth}: any) {
     const [searchInput, setSearchInput] = useState<string>(search);
 
     function submitSearch(e: FormEvent) {
@@ -19,10 +19,9 @@ export default function Reservations({paginationReservations, search}: any) {
 
     return (
         <AuthenticatedLayout
-
+            auth={auth}
+            header={'Rezervace'}
         >
-            <Head title="Sections"/>
-            <br/>
             <div className="mx-auto flex justify-center items-center px-4">
                 <form
                     className="flex max-w-md flex-row gap-4"
