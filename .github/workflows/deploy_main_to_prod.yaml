@@ -24,6 +24,7 @@ jobs:
           port: ${{ secrets.FTP_PORT }}
           local_path: './*'
           remote_path: '/www/backend'
+          sftp_only: true
 
       # - name: Sync files
       #   uses: wangyucode/sftp-upload-action@v2.0.2
