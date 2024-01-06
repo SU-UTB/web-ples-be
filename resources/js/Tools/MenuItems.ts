@@ -35,17 +35,26 @@ export const MenuItems: Array<IMenuItem> = [
     }, {
         title: 'Edit webu',
         route: 'landingEdit',
-        link: '/admin/makers',
+/*
+        link: '/admin/content/landing',
+*/
+        link: '/admin',
         icon: FaPenToSquare
     }, {
         title: 'Edit kontaktů',
         route: 'contactsEdit',
-        link: '/admin/makers',
+/*
+        link: '/admin/content/landing/contacts',
+*/
+        link: '/admin',
         icon: FaUserPen
     }, {
         title: 'Edit lístků',
         route: 'ticketsEdit',
-        link: '/admin/makers',
+/*
+        link: '/admin/content/landing/tickets',
+*/
+        link: '/admin',
         icon: FaTicket
     }
 ]
