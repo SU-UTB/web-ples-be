@@ -1,0 +1,37 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+name: Deploy website on main push
+jobs:
+  web-deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v3
+
+      - name: Build backoffice
+        run: npm ci && npm run build
+
+      - name: Deploy files
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        with:
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP }}
+          port: ${{ secrets.FTP_PORT }}
+          local_path: './*'
+          remote_path: '/www/backend'
+          sftp_only: true
+
+      # - name: Sync files
+      #   uses: wangyucode/sftp-upload-action@v2.0.2
+      #   with:
+      #     host: ${{ secrets.FTP }}
+      #     username: ${{ secrets.FTP_USERNAME }}
+      #     password: ${{ secrets.FTP_PASSWORD }}
+      #     localDir: '.'
+      #     remoteDir: './www/backend/'
+      #     exclude: '.git*,**/.git*,**/.git*/**,**/.idea*,**/.idea*/**.DS_Store,.env,.env.example,.htaccess, **/public/images*'
