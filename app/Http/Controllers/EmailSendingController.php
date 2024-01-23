@@ -83,9 +83,9 @@ class EmailSendingController extends Controller
         switch ($type) {
             case EmailContent::ReserveMaker:
             case EmailContent::Reserve:
-                return 'Reprezentační ples UTB 2023 - Potvrzení rezervace';
+                return 'Reprezentační ples UTB 2024 - Potvrzení rezervace';
             case EmailContent::Cancel:
-                return 'Reprezentační ples UTB 2023 - Zrušení rezervace';
+                return 'Reprezentační ples UTB 2024 - Zrušení rezervace';
         }
     }
 }
