@@ -38,7 +38,6 @@ Route::get('/migrate', function () {
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('logout', [AuthController::class, 'logout']);
-
     //Route::resource('reservations', ReservationController::class);
     Route::get('pages/reservations', [ContentLandingController::class, 'indexReservations']);
 

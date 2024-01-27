@@ -14,7 +14,7 @@ class Reservation extends Model
 {
     use HasFactory;
 
-    protected $table = 'seats';
+    protected $table = 'reservations';
     protected $fillable = [
         'name',
         'email',
