@@ -44,8 +44,12 @@ class AdministrationController extends Controller
 
     public static function makers()
     {
-        $data = AdministrationController::getMakersReservationsData();
-        return view('administration/makers', ["reservations" => $data, "search" => ""]);
+        $makersData = AdministrationController::getMakersReservationsData();
+
+        return Inertia::render('Admin/Makers', [
+            'Makers' => $makersData, 
+            'search' => ""
+        ]);
     }
 
     public function reservationsSearch(Request $request)
@@ -92,7 +96,10 @@ class AdministrationController extends Controller
                     return str_contains(strtolower($var['name']), strtolower($search));
                 }
             );
-            return view('administration/makers', ["reservations" => $data, "search" => $search]);
+            return Inertia::render('Admin/Makers', [
+                'Makers' => $data, 
+                'search' => $search
+            ]);
         }
     }
 
