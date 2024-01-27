@@ -5,7 +5,6 @@ import AuthenticatedLayout from "../../Layouts/AuthenticatedLayout";
 import MakersTable from "../../Components/Tables/MakersTable";
 
 export default function Makers({ Makers, search, auth }: any) {
-    console.log(Makers);
     const [searchInput, setSearchInput] = useState<string>(search);
 
     function submitSearch(e: FormEvent) {
