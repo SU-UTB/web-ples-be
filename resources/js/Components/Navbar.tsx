@@ -8,7 +8,6 @@ interface INavbar {
 }
 
 export const Navbar = ({title, auth}: INavbar) => {
-    console.log(auth);
     return (
         <FbNavbar fluid rounded className={'bg-[#f8f9fa]'}>
             <FbNavbar.Brand href="/admin">
