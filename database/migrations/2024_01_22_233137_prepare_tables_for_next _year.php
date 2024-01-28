@@ -10,14 +10,13 @@ return new class extends Migration
     {
         // Drop the 'reservations' table if it exists before creating a new one
         Schema::dropIfExists('reservations');
-        
+
         // Create a copy of the 'r2023_rezervace' table and its data
         DB::statement('CREATE TABLE reservations LIKE r2023_rezervace');
-        DB::statement('INSERT INTO reservations SELECT * FROM r2023_rezervace');
 
         // Drop the 'seats' table if it exists before creating a new one
         Schema::dropIfExists('seats');
-        
+
         // Create a copy of the 'r2023_seats' table and its data
         DB::statement('CREATE TABLE seats LIKE r2023_seats');
         DB::statement('INSERT INTO seats SELECT * FROM r2023_seats');
