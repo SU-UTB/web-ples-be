@@ -13,7 +13,7 @@ class Seat extends Model
 {
     use HasFactory;
 
-    protected $table = 'r2023_seats';
+    protected $table = 'seats';
 
 
     public function reservation(): HasOne

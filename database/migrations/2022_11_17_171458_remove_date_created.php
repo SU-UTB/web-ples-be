@@ -17,7 +17,6 @@ return new class extends Migration
             $table->dropColumn('date_reservation');
         });
     }
-
     /**
      * Reverse the migrations.
      *

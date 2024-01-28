@@ -14,7 +14,7 @@ class Reservation extends Model
 {
     use HasFactory;
 
-    protected $table = 'r2023_rezervace';
+    protected $table = 'reservations';
     protected $fillable = [
         'name',
         'email',
