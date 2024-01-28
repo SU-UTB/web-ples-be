@@ -29,8 +29,7 @@ export const Navbar = ({title, auth}: INavbar) => {
                         <span className="block truncate text-sm font-medium">{auth.user.email}</span>
                     </Dropdown.Header>
 
-                    <Dropdown.Item onClick={() => router.visit('logout',
-                        {method: 'post'})}>
+                    <Dropdown.Item onClick={() => router.post('admin/logout',)}>
                         Sign out
                     </Dropdown.Item>
                 </Dropdown>
