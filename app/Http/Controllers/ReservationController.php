@@ -9,6 +9,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -27,7 +28,7 @@ use Inertia\Inertia;
  *     )
  * ),
  * @OA\Server(
- *     url="/api/v1",
+ *     url="/api",
  * ),
  */
 class ReservationController extends Controller
@@ -111,15 +112,20 @@ class ReservationController extends Controller
      * )
      */
 
+    
     public function store(Request $request)
     {
-
+    
         /*         $request->validate([
             'name' => 'required',
             'email' => 'required',
             'tel' => 'required',
             'consent' => 'required'
         ]); */
+
+        Log::info('Reservation successfully created', [
+            'reservation_id' => $reservation->id,
+        ]);
         $seatsData = json_decode($request->input('seats'), true);
 
         if ($request->input('stand') == 0 && count($seatsData ?? []) == 0) {
